@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — Nord Commerce</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style type="text/tailwindcss">
+    @theme { --font-sans: Inter, ui-sans-serif, system-ui, sans-serif; }
+    @layer base {
+      body { @apply bg-[#f6f6f3] text-zinc-950 antialiased; }
+      [x-cloak] { display: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+<div class="flex min-h-screen">
+  
+<aside class="fixed inset-y-0 left-0 z-30 hidden w-[236px] flex-col bg-[#11110f] px-4 py-5 text-white lg:flex">
+  <a href="dashboard.html" class="flex items-center gap-3 px-2">
+    <div class="flex size-9 items-center justify-center rounded-xl bg-white text-black">
+      <i data-lucide="box" class="size-4.5" stroke-width="1.8"></i>
+    </div>
+    <div>
+      <div class="text-[14px] font-semibold tracking-[-0.02em]">Nord Commerce</div>
+      <div class="mt-0.5 text-[11px] text-zinc-500">Europe Store</div>
+    </div>
+  </a>
+
+  <nav class="mt-9 space-y-1 text-[13px]">
+    <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="layout-dashboard" class="size-4" stroke-width="1.7"></i>
+    Dashboard
+    
+  </a>
+    <a href="index.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="package" class="size-4" stroke-width="1.7"></i>
+    Products
+    <span class="ml-auto bg-[#d8ff5f] text-black flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold">248</span>
+  </a>
+    <a href="orders.html" class="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 font-medium text-black">
+    <i data-lucide="shopping-bag" class="size-4" stroke-width="1.7"></i>
+    Orders
+    <span class="ml-auto bg-zinc-100 text-zinc-500 flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold">8</span>
+  </a>
+    <a href="customers.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="users" class="size-4" stroke-width="1.7"></i>
+    Customers
+    
+  </a>
+    <a href="inventory.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="warehouse" class="size-4" stroke-width="1.7"></i>
+    Inventory
+    
+  </a>
+
+    <div class="px-3 pb-2 pt-7 text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-600">Business</div>
+
+    <a href="b2b.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="building-2" class="size-4" stroke-width="1.7"></i>
+    B2B
+    
+  </a>
+    <a href="markets.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="globe-2" class="size-4" stroke-width="1.7"></i>
+    Markets
+    
+  </a>
+    <a href="integrations.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+    <i data-lucide="plug" class="size-4" stroke-width="1.7"></i>
+    Integrations
+    
+  </a>
+  </nav>
+
+  <div class="mt-auto">
+    <div class="rounded-2xl bg-zinc-900 p-3.5">
+      <div class="flex items-center gap-2">
+        <div class="size-2 rounded-full bg-[#d8ff5f]"></div>
+        <span class="text-[11px] font-medium text-zinc-300">All systems operational</span>
+      </div>
+      <div class="mt-3 flex items-center justify-between text-[10px] text-zinc-600">
+        <span>ERP</span><span>Warehouse</span><span>Payments</span>
+      </div>
+    </div>
+
+    <div class="mt-4 flex items-center gap-3 px-2">
+      <div class="flex size-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium">AM</div>
+      <div class="min-w-0">
+        <div class="truncate text-xs font-medium">Anna Müller</div>
+        <div class="text-[10px] text-zinc-600">Administrator</div>
+      </div>
+      <i data-lucide="chevrons-up-down" class="ml-auto size-3.5 text-zinc-600"></i>
+    </div>
+  </div>
+</aside>
+
+  <main class="w-full lg:pl-[236px]">
+    
+<header class="sticky top-0 z-20 border-b border-black/5 bg-[#f6f6f3]/90 backdrop-blur-xl">
+  <div class="flex h-[70px] items-center justify-between px-5 md:px-8 xl:px-10">
+    <div>
+      <div class="text-[12px] font-medium text-zinc-800">Orders</div>
+      <div class="mt-0.5 hidden text-[9px] text-zinc-400 sm:block">Payments, fulfilment, shipping and returns</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
+        <i data-lucide="search" class="size-4"></i>
+      </button>
+      <button class="relative flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
+        <i data-lucide="bell" class="size-4"></i>
+        <span class="absolute right-2 top-2 size-1.5 rounded-full bg-[#d8ff5f]"></span>
+      </button>
+      <div class="hidden h-9 items-center gap-2 rounded-xl bg-white px-3 shadow-sm sm:flex">
+        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+        <span class="text-[10px] font-medium">Live</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <div class="mx-auto max-w-[1460px] px-5 py-7 md:px-8 xl:px-10">
+      <div class="mb-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div>
+          <div class="mb-2 flex items-center gap-2">
+            <span class="flex size-5 items-center justify-center rounded-md bg-[#d8ff5f]">
+              <i data-lucide="shopping-bag" class="size-3"></i>
+            </span>
+            <span class="text-[10px] font-medium text-zinc-500">Order operations</span>
+          </div>
+          <h1 class="text-[32px] font-semibold tracking-[-0.045em] md:text-[42px]">Orders</h1>
+          <p class="mt-2 max-w-xl text-[13px] leading-5 text-zinc-500">
+            A single view of revenue, payment state, fulfilment and delivery across all active markets.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="flex h-9 items-center gap-2 rounded-xl bg-white px-3.5 text-[10px] font-medium shadow-sm">
+            <i data-lucide="download" class="size-3.5"></i>
+            Export
+          </button>
+          <button class="flex h-9 items-center gap-2 rounded-xl bg-black px-4 text-[10px] font-medium text-white">
+            <i data-lucide="plus" class="size-3.5"></i>
+            Create order
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI grid -->
+      <section class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <article class="relative overflow-hidden rounded-[22px] bg-[#171715] p-5 text-white shadow-xl shadow-black/5">
+          <div class="absolute -right-8 -top-12 size-32 rounded-full bg-[#d8ff5f]/20 blur-3xl"></div>
+          <div class="relative">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-medium text-zinc-500">Revenue today</span>
+              <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-800">
+                <i data-lucide="badge-euro" class="size-3.5 text-[#d8ff5f]"></i>
+              </span>
+            </div>
+            <div class="mt-6 flex items-end justify-between">
+              <div>
+                <div class="text-[30px] font-semibold tracking-[-0.05em]">€4,842</div>
+                <div class="mt-1 flex items-center gap-1 text-[9px] text-[#d8ff5f]">
+                  <i data-lucide="trending-up" class="size-3"></i> 12.4% vs yesterday
+                </div>
+              </div>
+              <div class="flex h-12 items-end gap-1">
+                <span class="h-[35%] w-1.5 rounded-full bg-zinc-700"></span>
+                <span class="h-[52%] w-1.5 rounded-full bg-zinc-700"></span>
+                <span class="h-[44%] w-1.5 rounded-full bg-zinc-700"></span>
+                <span class="h-[68%] w-1.5 rounded-full bg-zinc-600"></span>
+                <span class="h-[58%] w-1.5 rounded-full bg-zinc-600"></span>
+                <span class="h-[82%] w-1.5 rounded-full bg-[#d8ff5f]"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-medium text-zinc-400">Orders today</span>
+            <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+              <i data-lucide="shopping-cart" class="size-3.5"></i>
+            </span>
+          </div>
+          <div class="mt-6 text-[30px] font-semibold tracking-[-0.05em]">28</div>
+          <div class="mt-1 flex items-center justify-between">
+            <span class="text-[9px] text-emerald-600">+8.2%</span>
+            <span class="text-[9px] text-zinc-400">5 waiting</span>
+          </div>
+        </article>
+
+        <article class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-medium text-zinc-400">Average order</span>
+            <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+              <i data-lucide="receipt-text" class="size-3.5"></i>
+            </span>
+          </div>
+          <div class="mt-6 text-[30px] font-semibold tracking-[-0.05em]">€172.93</div>
+          <div class="mt-1 flex items-center justify-between">
+            <span class="text-[9px] text-emerald-600">+4.8%</span>
+            <span class="text-[9px] text-zinc-400">B2C + B2B</span>
+          </div>
+        </article>
+
+        <article class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-medium text-zinc-400">Fulfilment</span>
+            <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+              <i data-lucide="package-check" class="size-3.5"></i>
+            </span>
+          </div>
+          <div class="mt-6 flex items-end justify-between">
+            <div>
+              <div class="text-[30px] font-semibold tracking-[-0.05em]">92%</div>
+              <div class="mt-1 text-[9px] text-zinc-400">within SLA</div>
+            </div>
+            <div class="relative size-11 rounded-full bg-zinc-100">
+              <div class="absolute inset-[5px] rounded-full bg-white"></div>
+              <div class="absolute inset-0 flex items-center justify-center text-[8px] font-semibold">26/28</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Flow -->
+      <section class="mt-4 rounded-[22px] bg-white px-5 py-4 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:px-6">
+        <div class="flex flex-col gap-4 xl:flex-row xl:items-center">
+          <div class="min-w-[150px]">
+            <div class="text-[10px] font-semibold">Today’s flow</div>
+            <div class="mt-1 text-[9px] text-zinc-400">Live fulfilment state</div>
+          </div>
+
+          <div class="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-4">
+            <div class="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-emerald-600 shadow-sm">
+                <i data-lucide="credit-card" class="size-3.5"></i>
+              </span>
+              <div>
+                <div class="text-[9px] text-emerald-700">Paid</div>
+                <div class="text-[12px] font-semibold">11</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 rounded-xl bg-amber-50 px-3 py-2.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-amber-600 shadow-sm">
+                <i data-lucide="package-open" class="size-3.5"></i>
+              </span>
+              <div>
+                <div class="text-[9px] text-amber-700">Processing</div>
+                <div class="text-[12px] font-semibold">7</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 rounded-xl bg-sky-50 px-3 py-2.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-sky-600 shadow-sm">
+                <i data-lucide="package-check" class="size-3.5"></i>
+              </span>
+              <div>
+                <div class="text-[9px] text-sky-700">Ready</div>
+                <div class="text-[12px] font-semibold">5</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 rounded-xl bg-violet-50 px-3 py-2.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-violet-600 shadow-sm">
+                <i data-lucide="truck" class="size-3.5"></i>
+              </span>
+              <div>
+                <div class="text-[9px] text-violet-700">Shipped</div>
+                <div class="text-[12px] font-semibold">5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Orders list -->
+      <section
+        x-data="{
+          filter: 'All',
+          orders: [
+            { id:'#4821', time:'Today · 10:42', customer:'Sofia Martinez', country:'Spain', total:'€189.00', status:'Paid', icon:'credit-card', tone:'emerald', tracking:'' },
+            { id:'#4822', time:'Today · 09:18', customer:'Lukas Weber', country:'Germany', total:'€378.00', status:'Processing', icon:'package-open', tone:'amber', tracking:'' },
+            { id:'#4823', time:'Yesterday · 17:36', customer:'Camille Bernard', country:'France', total:'€189.00', status:'Shipped', icon:'truck', tone:'violet', tracking:'DHL · 00340434161094000017' },
+            { id:'#4824', time:'Yesterday · 15:05', customer:'Daniel Costa', country:'Portugal', total:'€567.00', status:'Ready to ship', icon:'package-check', tone:'sky', tracking:'' },
+            { id:'#4825', time:'Sep 23 · 12:14', customer:'Emma Johnson', country:'Netherlands', total:'€189.00', status:'Refunded', icon:'rotate-ccw', tone:'zinc', tracking:'' }
+          ],
+          visible(order) { return this.filter === 'All' || order.status === this.filter; },
+          statusClass(status) {
+            return {
+              'Paid':'bg-emerald-50 text-emerald-700',
+              'Processing':'bg-amber-50 text-amber-700',
+              'Ready to ship':'bg-sky-50 text-sky-700',
+              'Shipped':'bg-violet-50 text-violet-700',
+              'Refunded':'bg-zinc-100 text-zinc-600'
+            }[status];
+          }
+        }"
+        class="mt-4 overflow-hidden rounded-[24px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+      >
+        <div class="flex flex-col gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-6">
+          <div>
+            <h2 class="text-[15px] font-semibold tracking-[-0.02em]">Recent orders</h2>
+            <p class="mt-1 text-[10px] text-zinc-400">Update order state directly from the list.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1 rounded-xl bg-zinc-100 p-1">
+            <template x-for="item in ['All','Paid','Processing','Ready to ship','Shipped']" :key="item">
+              <button
+                type="button"
+                @click="filter = item"
+                :class="filter === item ? 'bg-white text-black shadow-sm' : 'text-zinc-500'"
+                class="rounded-lg px-2.5 py-1.5 text-[9px] font-medium transition"
+                x-text="item"
+              ></button>
+            </template>
+          </div>
+        </div>
+
+        <div class="divide-y divide-zinc-100">
+          <template x-for="order in orders" :key="order.id">
+            <div x-show="visible(order)" x-data="{ editing:false }" class="px-5 py-4 md:px-6">
+              <div class="grid items-center gap-4 md:grid-cols-[44px_1.2fr_.55fr_.65fr_auto]">
+                <div
+                  class="flex size-10 items-center justify-center rounded-xl"
+                  :class="{
+                    'bg-emerald-50 text-emerald-600': order.status === 'Paid',
+                    'bg-amber-50 text-amber-600': order.status === 'Processing',
+                    'bg-sky-50 text-sky-600': order.status === 'Ready to ship',
+                    'bg-violet-50 text-violet-600': order.status === 'Shipped',
+                    'bg-zinc-100 text-zinc-500': order.status === 'Refunded'
+                  }"
+                >
+                  <i :data-lucide="order.icon" class="size-4" stroke-width="1.7"></i>
+                </div>
+
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-[12px] font-semibold" x-text="order.id"></span>
+                    <span class="text-[9px] text-zinc-400" x-text="order.time"></span>
+                  </div>
+                  <div class="mt-1 flex flex-wrap items-center gap-2">
+                    <span class="text-[10px] text-zinc-500">
+                      <span x-text="order.customer"></span> · <span x-text="order.country"></span>
+                    </span>
+                    <span
+                      x-show="order.tracking"
+                      class="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-1.5 py-1 font-mono text-[8px] font-medium text-zinc-600"
+                    >
+                      <i data-lucide="route" class="size-2.5"></i>
+                      <span x-text="order.tracking"></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-[9px] text-zinc-400">Total</div>
+                  <div class="mt-1 text-[12px] font-semibold" x-text="order.total"></div>
+                </div>
+
+                <div>
+                  <span
+                    x-text="order.status"
+                    :class="statusClass(order.status)"
+                    class="inline-flex rounded-full px-2.5 py-1 text-[9px] font-semibold"
+                  ></span>
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    type="button"
+                    @click="editing = !editing"
+                    class="flex size-8 items-center justify-center rounded-full bg-zinc-100 text-zinc-500 transition hover:bg-black hover:text-white"
+                  >
+                    <i data-lucide="pencil" class="size-3.5"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div
+                x-show="editing"
+                x-transition
+                @click.outside="editing = false"
+                class="mt-3 flex flex-wrap gap-1.5 rounded-xl bg-zinc-50 p-2 md:ml-[60px]"
+              >
+                <template x-for="status in ['Paid','Processing','Ready to ship','Shipped','Refunded']" :key="status">
+                  <button
+                    type="button"
+                    @click="order.status = status; editing = false; $nextTick(() => lucide.createIcons())"
+                    class="rounded-lg bg-white px-2.5 py-1.5 text-[9px] font-medium shadow-sm"
+                    x-text="status"
+                  ></button>
+                </template>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  document.addEventListener('alpine:initialized', () => lucide.createIcons());
+  document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+</script>
+</body>
+</html>
