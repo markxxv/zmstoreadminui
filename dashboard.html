@@ -6,174 +6,794 @@
   <title>Dashboard — Nord Commerce</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
   <style type="text/tailwindcss">
     @theme { --font-sans: Inter, ui-sans-serif, system-ui, sans-serif; }
+
     @layer base {
       body { @apply bg-[#f6f6f3] text-zinc-950 antialiased; }
       [x-cloak] { display: none !important; }
     }
+
+    @layer components {
+      .panel { @apply rounded-[24px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)]; }
+      .metric-label { @apply text-[9px] font-medium text-zinc-400; }
+    }
   </style>
 </head>
+
 <body class="min-h-screen">
-<div class="flex min-h-screen">
-  
-<aside class="fixed inset-y-0 left-0 z-30 hidden w-[236px] flex-col bg-[#11110f] px-4 py-5 text-white lg:flex">
-  <a href="dashboard.html" class="flex items-center gap-3 px-2">
-    <div class="flex size-9 items-center justify-center rounded-xl bg-white text-black">
-      <i data-lucide="box" class="size-4.5" stroke-width="1.8"></i>
-    </div>
-    <div>
-      <div class="text-[14px] font-semibold tracking-[-0.02em]">Nord Commerce</div>
-      <div class="mt-0.5 text-[11px] text-zinc-500">Europe Store</div>
-    </div>
-  </a>
+<div x-data="dashboardPage()" x-init="$nextTick(() => lucide.createIcons())" class="flex min-h-screen">
 
-  <nav class="mt-9 space-y-1 text-[13px]">
-    <a href="dashboard.html" class="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 font-medium text-black">
-    <i data-lucide="layout-dashboard" class="size-4" stroke-width="1.7"></i>
-    Dashboard
-    
-  </a>
-    <a href="index.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="package" class="size-4" stroke-width="1.7"></i>
-    Products
-    <span class="ml-auto bg-[#d8ff5f] text-black flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold">248</span>
-  </a>
-    <a href="orders.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="shopping-bag" class="size-4" stroke-width="1.7"></i>
-    Orders
-    <span class="ml-auto bg-[#d8ff5f] text-black flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold">8</span>
-  </a>
-    <a href="customers.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="users" class="size-4" stroke-width="1.7"></i>
-    Customers
-    
-  </a>
-    <a href="inventory.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="warehouse" class="size-4" stroke-width="1.7"></i>
-    Inventory
-    
-  </a>
-
-    <div class="px-3 pb-2 pt-7 text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-600">Business</div>
-
-    <a href="b2b.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="building-2" class="size-4" stroke-width="1.7"></i>
-    B2B
-    
-  </a>
-    <a href="markets.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="globe-2" class="size-4" stroke-width="1.7"></i>
-    Markets
-    
-  </a>
-    <a href="integrations.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
-    <i data-lucide="plug" class="size-4" stroke-width="1.7"></i>
-    Integrations
-    
-  </a>
-  </nav>
-
-  <div class="mt-auto">
-    <div class="rounded-2xl bg-zinc-900 p-3.5">
-      <div class="flex items-center gap-2">
-        <div class="size-2 rounded-full bg-[#d8ff5f]"></div>
-        <span class="text-[11px] font-medium text-zinc-300">All systems operational</span>
+  <aside class="fixed inset-y-0 left-0 z-30 hidden w-[236px] flex-col bg-[#11110f] px-4 py-5 text-white lg:flex">
+    <a href="dashboard.html" class="flex items-center gap-3 px-2">
+      <div class="flex size-9 items-center justify-center rounded-xl bg-white text-black">
+        <i data-lucide="box" class="size-4.5" stroke-width="1.8"></i>
       </div>
-      <div class="mt-3 flex items-center justify-between text-[10px] text-zinc-600">
-        <span>ERP</span><span>Warehouse</span><span>Payments</span>
+      <div>
+        <div class="text-[14px] font-semibold tracking-[-0.02em]">Nord Commerce</div>
+        <div class="mt-0.5 text-[11px] text-zinc-500">Europe Store</div>
       </div>
-    </div>
+    </a>
 
-    <div class="mt-4 flex items-center gap-3 px-2">
-      <div class="flex size-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium">AM</div>
-      <div class="min-w-0">
-        <div class="truncate text-xs font-medium">Anna Müller</div>
-        <div class="text-[10px] text-zinc-600">Administrator</div>
-      </div>
-      <i data-lucide="chevrons-up-down" class="ml-auto size-3.5 text-zinc-600"></i>
-    </div>
-  </div>
-</aside>
-  <main class="w-full lg:pl-[236px]">
-    
-<header class="sticky top-0 z-20 border-b border-black/5 bg-[#f6f6f3]/90 backdrop-blur-xl">
-  <div class="flex h-[70px] items-center justify-between px-5 md:px-8 xl:px-10">
-    <div>
-      <div class="text-[12px] font-medium text-zinc-800">Dashboard</div>
-      <div class="mt-0.5 hidden text-[9px] text-zinc-400 sm:block">A high-level view of commerce performance, operations and market health.</div>
-    </div>
-    <div class="flex items-center gap-2">
-      <button class="flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
-        <i data-lucide="search" class="size-4"></i>
-      </button>
-      <button class="relative flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
-        <i data-lucide="bell" class="size-4"></i>
-        <span class="absolute right-2 top-2 size-1.5 rounded-full bg-[#d8ff5f]"></span>
-      </button>
-      <div class="hidden h-9 items-center gap-2 rounded-xl bg-white px-3 shadow-sm sm:flex">
-        <span class="size-1.5 rounded-full bg-emerald-500"></span>
-        <span class="text-[10px] font-medium">Live</span>
-      </div>
-    </div>
-  </div>
-</header>
-    <div class="mx-auto max-w-[1460px] px-5 py-8 md:px-8 xl:px-10">
-      <div class="mb-8">
-        <div class="mb-2 flex items-center gap-2">
-          <span class="flex size-5 items-center justify-center rounded-md bg-[#d8ff5f]">
-            <i data-lucide="layout-dashboard" class="size-3"></i>
-          </span>
-          <span class="text-[10px] font-medium text-zinc-500">Commerce overview</span>
+    <nav class="mt-9 space-y-1 text-[13px]">
+      <a href="dashboard.html" class="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 font-medium text-black">
+        <i data-lucide="layout-dashboard" class="size-4" stroke-width="1.7"></i>
+        Dashboard
+      </a>
+
+      <a href="index.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="package" class="size-4" stroke-width="1.7"></i>
+        Products
+        <span class="ml-auto flex min-w-5 items-center justify-center rounded-full bg-[#d8ff5f] px-1.5 py-0.5 text-[9px] font-semibold text-black">248</span>
+      </a>
+
+      <a href="orders.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="shopping-bag" class="size-4" stroke-width="1.7"></i>
+        Orders
+        <span class="ml-auto flex min-w-5 items-center justify-center rounded-full bg-[#d8ff5f] px-1.5 py-0.5 text-[9px] font-semibold text-black">8</span>
+      </a>
+
+      <a href="customers.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="users" class="size-4" stroke-width="1.7"></i>
+        Customers
+      </a>
+
+      <a href="inventory.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="warehouse" class="size-4" stroke-width="1.7"></i>
+        Inventory
+      </a>
+
+      <div class="px-3 pb-2 pt-7 text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-600">Business</div>
+
+      <a href="b2b.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="building-2" class="size-4" stroke-width="1.7"></i>
+        B2B
+      </a>
+
+      <a href="markets.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="globe-2" class="size-4" stroke-width="1.7"></i>
+        Markets
+      </a>
+
+      <a href="integrations.html" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+        <i data-lucide="plug" class="size-4" stroke-width="1.7"></i>
+        Integrations
+      </a>
+    </nav>
+
+    <div class="mt-auto">
+      <div class="rounded-2xl bg-zinc-900 p-3.5">
+        <div class="flex items-center gap-2">
+          <div class="size-2 rounded-full bg-[#d8ff5f]"></div>
+          <span class="text-[11px] font-medium text-zinc-300">All systems operational</span>
         </div>
-        <h1 class="text-[32px] font-semibold tracking-[-0.045em] md:text-[42px]">Dashboard</h1>
-        <p class="mt-2 max-w-xl text-[13px] leading-5 text-zinc-500">A high-level view of commerce performance, operations and market health.</p>
+        <div class="mt-3 flex items-center justify-between text-[10px] text-zinc-600">
+          <span>ERP</span><span>Warehouse</span><span>Payments</span>
+        </div>
       </div>
 
-      <section class="relative overflow-hidden rounded-[28px] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-8">
-        <div class="absolute right-[-60px] top-[-70px] size-56 rounded-full bg-[#d8ff5f]/20 blur-3xl"></div>
+      <div class="mt-4 flex items-center gap-3 px-2">
+        <div class="flex size-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium">AM</div>
+        <div class="min-w-0">
+          <div class="truncate text-xs font-medium">Anna Müller</div>
+          <div class="text-[10px] text-zinc-600">Administrator</div>
+        </div>
+        <i data-lucide="chevrons-up-down" class="ml-auto size-3.5 text-zinc-600"></i>
+      </div>
+    </div>
+  </aside>
 
-        <div class="relative flex min-h-[420px] flex-col justify-between">
-          <div class="flex items-start justify-between">
-            <div class="flex size-11 items-center justify-center rounded-2xl bg-zinc-100">
-              <i data-lucide="layout-dashboard" class="size-5" stroke-width="1.6"></i>
-            </div>
-            <span class="rounded-full bg-zinc-100 px-2.5 py-1 text-[9px] font-medium text-zinc-500">Workspace ready</span>
+  <main class="w-full lg:pl-[236px]">
+    <header class="sticky top-0 z-20 border-b border-black/5 bg-[#f6f6f3]/90 backdrop-blur-xl">
+      <div class="flex h-[70px] items-center justify-between px-5 md:px-8 xl:px-10">
+        <div>
+          <div class="text-[12px] font-medium text-zinc-800">Dashboard</div>
+          <div class="mt-0.5 hidden text-[9px] text-zinc-400 sm:block">Live commerce performance across sales, markets, customers and fulfilment.</div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button class="flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
+            <i data-lucide="search" class="size-4"></i>
+          </button>
+          <button class="relative flex size-9 items-center justify-center rounded-xl bg-white shadow-sm">
+            <i data-lucide="bell" class="size-4"></i>
+            <span class="absolute right-2 top-2 size-1.5 rounded-full bg-[#d8ff5f]"></span>
+          </button>
+          <div class="hidden h-9 items-center gap-2 rounded-xl bg-white px-3 shadow-sm sm:flex">
+            <span class="size-1.5 rounded-full bg-emerald-500"></span>
+            <span class="text-[10px] font-medium">Live</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="mx-auto max-w-[1460px] px-5 py-7 md:px-8 xl:px-10">
+      <div class="mb-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div>
+          <div class="mb-2 flex items-center gap-2">
+            <span class="flex size-5 items-center justify-center rounded-md bg-[#d8ff5f]">
+              <i data-lucide="sparkles" class="size-3"></i>
+            </span>
+            <span class="text-[10px] font-medium text-zinc-500">Friday · September 25</span>
           </div>
 
-          <div class="max-w-lg">
-            <div class="mb-4 flex items-center gap-2">
-              <span class="h-px w-8 bg-zinc-300"></span>
-              <span class="text-[9px] font-medium uppercase tracking-[0.16em] text-zinc-400">Dashboard</span>
-            </div>
-            <h2 class="text-[24px] font-semibold tracking-[-0.035em] md:text-[30px]">Ready for the next workflow.</h2>
-            <p class="mt-3 text-[12px] leading-5 text-zinc-500">
-              This page is connected to the admin navigation and keeps the same product-system language. We can build the actual workflow here next.
-            </p>
-          </div>
+          <h1 class="text-[32px] font-semibold tracking-[-0.045em] md:text-[42px]">Good afternoon, Anna.</h1>
+          <p class="mt-2 max-w-xl text-[13px] leading-5 text-zinc-500">
+            Revenue is ahead of last month. Eight orders need attention and Germany is your fastest-growing market today.
+          </p>
+        </div>
 
-          <div class="grid gap-2 sm:grid-cols-3">
-            <div class="rounded-2xl bg-zinc-50 p-4">
-              <div class="text-[9px] text-zinc-400">Module</div>
-              <div class="mt-1.5 text-[11px] font-medium">Dashboard</div>
-            </div>
-            <div class="rounded-2xl bg-zinc-50 p-4">
-              <div class="text-[9px] text-zinc-400">System</div>
-              <div class="mt-1.5 flex items-center gap-1.5 text-[11px] font-medium">
-                <span class="size-1.5 rounded-full bg-emerald-500"></span>Connected
+        <div class="flex items-center gap-2">
+          <button class="flex h-9 items-center gap-2 rounded-xl bg-white px-3.5 text-[10px] font-medium shadow-sm">
+            <i data-lucide="calendar-days" class="size-3.5"></i>
+            Sep 1 — Sep 25
+          </button>
+          <button class="flex h-9 items-center gap-2 rounded-xl bg-black px-4 text-[10px] font-medium text-white">
+            <i data-lucide="download" class="size-3.5"></i>
+            Export report
+          </button>
+        </div>
+      </div>
+
+      <section class="grid gap-4 xl:grid-cols-12">
+        <article class="relative overflow-hidden rounded-[28px] bg-[#171715] p-5 text-white shadow-xl shadow-black/5 md:p-6 xl:col-span-7">
+          <div class="absolute -right-12 -top-16 size-52 rounded-full bg-[#d8ff5f]/20 blur-3xl"></div>
+
+          <div class="relative">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-medium text-zinc-500">Net revenue</span>
+                  <span class="flex items-center gap-1 rounded-full bg-zinc-900 px-2 py-1 text-[8px] text-[#d8ff5f]">
+                    <i data-lucide="trending-up" class="size-2.5"></i>
+                    <span x-text="periods[period].growth"></span>
+                  </span>
+                </div>
+
+                <div class="mt-3 flex items-end gap-3">
+                  <div class="text-[38px] font-semibold tracking-[-0.055em] md:text-[48px]" x-text="periods[period].revenue"></div>
+                  <div class="pb-2 text-[9px] text-zinc-500">EUR</div>
+                </div>
+
+                <div class="mt-1 text-[9px] text-zinc-500">
+                  <span x-text="periods[period].comparison"></span>
+                </div>
+              </div>
+
+              <div class="flex w-fit gap-1 rounded-xl bg-zinc-900 p-1">
+                <template x-for="item in ['7D','30D','90D']" :key="item">
+                  <button
+                    type="button"
+                    @click="period = item"
+                    :class="period === item ? 'bg-white text-black' : 'text-zinc-500 hover:text-white'"
+                    class="rounded-lg px-2.5 py-1.5 text-[8px] font-semibold transition"
+                    x-text="item"
+                  ></button>
+                </template>
               </div>
             </div>
-            <div class="rounded-2xl bg-zinc-50 p-4">
-              <div class="text-[9px] text-zinc-400">Market</div>
-              <div class="mt-1.5 text-[11px] font-medium">Europe</div>
+
+            <div class="mt-8 flex h-[150px] items-end gap-1.5 md:gap-2">
+              <template x-for="(height, index) in periods[period].bars" :key="index">
+                <div class="group flex h-full flex-1 items-end">
+                  <div
+                    class="w-full rounded-t-[5px] transition-all duration-500"
+                    :class="index === periods[period].bars.length - 1 ? 'bg-[#d8ff5f]' : 'bg-zinc-800 group-hover:bg-zinc-700'"
+                    :style="'height:' + height + '%'"
+                  ></div>
+                </div>
+              </template>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between text-[8px] text-zinc-600">
+              <span x-text="periods[period].start"></span>
+              <span>Revenue after discounts & returns</span>
+              <span>Today</span>
+            </div>
+
+            <div class="mt-5 grid grid-cols-3 gap-2 border-t border-zinc-800 pt-4">
+              <div>
+                <div class="text-[8px] text-zinc-600">Gross sales</div>
+                <div class="mt-1 text-[12px] font-semibold" x-text="periods[period].gross"></div>
+              </div>
+              <div>
+                <div class="text-[8px] text-zinc-600">Discounts</div>
+                <div class="mt-1 text-[12px] font-semibold" x-text="periods[period].discounts"></div>
+              </div>
+              <div>
+                <div class="text-[8px] text-zinc-600">Returns</div>
+                <div class="mt-1 text-[12px] font-semibold" x-text="periods[period].returns"></div>
+              </div>
             </div>
           </div>
+        </article>
+
+        <div class="grid gap-4 sm:grid-cols-2 xl:col-span-5">
+          <article class="panel p-5">
+            <div class="flex items-center justify-between">
+              <span class="metric-label">Orders</span>
+              <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                <i data-lucide="shopping-bag" class="size-3.5"></i>
+              </span>
+            </div>
+
+            <div class="mt-6 text-[30px] font-semibold tracking-[-0.05em]">642</div>
+            <div class="mt-1 flex items-center justify-between">
+              <span class="text-[9px] text-emerald-600">+9.6%</span>
+              <span class="text-[9px] text-zinc-400">28 today</span>
+            </div>
+
+            <div class="mt-5 flex h-9 items-end gap-1">
+              <span class="h-[38%] flex-1 rounded-full bg-zinc-100"></span>
+              <span class="h-[44%] flex-1 rounded-full bg-zinc-100"></span>
+              <span class="h-[50%] flex-1 rounded-full bg-zinc-200"></span>
+              <span class="h-[45%] flex-1 rounded-full bg-zinc-100"></span>
+              <span class="h-[67%] flex-1 rounded-full bg-zinc-300"></span>
+              <span class="h-[74%] flex-1 rounded-full bg-black"></span>
+              <span class="h-full flex-1 rounded-full bg-[#d8ff5f]"></span>
+            </div>
+          </article>
+
+          <article class="panel p-5">
+            <div class="flex items-center justify-between">
+              <span class="metric-label">Conversion</span>
+              <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                <i data-lucide="mouse-pointer-click" class="size-3.5"></i>
+              </span>
+            </div>
+
+            <div class="mt-6 text-[30px] font-semibold tracking-[-0.05em]">3.84%</div>
+            <div class="mt-1 flex items-center justify-between">
+              <span class="text-[9px] text-emerald-600">+0.42 pts</span>
+              <span class="text-[9px] text-zinc-400">16.7k sessions</span>
+            </div>
+
+            <div class="mt-5">
+              <div class="mb-2 flex items-center justify-between text-[8px] text-zinc-400">
+                <span>Goal</span><span>4.2%</span>
+              </div>
+              <div class="h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                <div class="h-full w-[91%] rounded-full bg-black"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel p-5">
+            <div class="flex items-center justify-between">
+              <span class="metric-label">Customers</span>
+              <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                <i data-lucide="users" class="size-3.5"></i>
+              </span>
+            </div>
+
+            <div class="mt-6 flex items-end justify-between gap-3">
+              <div>
+                <div class="text-[30px] font-semibold tracking-[-0.05em]">4,892</div>
+                <div class="mt-1 text-[9px] text-emerald-600">+286 this month</div>
+              </div>
+
+              <div class="flex -space-x-2 pb-1">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-7 rounded-full object-cover ring-2 ring-white">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="size-7 rounded-full object-cover ring-2 ring-white">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" class="size-7 rounded-full object-cover ring-2 ring-white">
+              </div>
+            </div>
+          </article>
+
+          <article class="panel p-5">
+            <div class="flex items-center justify-between">
+              <span class="metric-label">Average order</span>
+              <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                <i data-lucide="receipt-text" class="size-3.5"></i>
+              </span>
+            </div>
+
+            <div class="mt-6 text-[30px] font-semibold tracking-[-0.05em]">€172.93</div>
+            <div class="mt-1 flex items-center justify-between">
+              <span class="text-[9px] text-emerald-600">+4.8%</span>
+              <span class="text-[9px] text-zinc-400">B2C + B2B</span>
+            </div>
+
+            <div class="mt-5 flex items-center gap-2">
+              <span class="rounded-full bg-zinc-100 px-2 py-1 text-[8px] font-medium">B2C €148</span>
+              <span class="rounded-full bg-[#d8ff5f] px-2 py-1 text-[8px] font-medium">B2B €412</span>
+            </div>
+          </article>
         </div>
+      </section>
+
+      <section class="mt-4 grid gap-4 xl:grid-cols-12">
+        <article class="panel overflow-hidden xl:col-span-5">
+          <div class="flex items-center justify-between px-5 py-5 md:px-6">
+            <div>
+              <h2 class="text-[15px] font-semibold tracking-[-0.02em]">Order flow</h2>
+              <p class="mt-1 text-[9px] text-zinc-400">What needs to happen next.</p>
+            </div>
+            <a href="orders.html" class="flex items-center gap-1 text-[9px] font-medium text-zinc-500">
+              All orders
+              <i data-lucide="arrow-up-right" class="size-3"></i>
+            </a>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 px-5 pb-5 md:grid-cols-4 md:px-6">
+            <div class="rounded-2xl bg-emerald-50 p-3.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-emerald-600 shadow-sm">
+                <i data-lucide="credit-card" class="size-3.5"></i>
+              </span>
+              <div class="mt-5 text-[22px] font-semibold tracking-[-0.04em]">11</div>
+              <div class="mt-1 text-[8px] font-medium text-emerald-700">Paid</div>
+            </div>
+
+            <div class="rounded-2xl bg-amber-50 p-3.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-amber-600 shadow-sm">
+                <i data-lucide="package-open" class="size-3.5"></i>
+              </span>
+              <div class="mt-5 text-[22px] font-semibold tracking-[-0.04em]">7</div>
+              <div class="mt-1 text-[8px] font-medium text-amber-700">Processing</div>
+            </div>
+
+            <div class="rounded-2xl bg-sky-50 p-3.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-sky-600 shadow-sm">
+                <i data-lucide="package-check" class="size-3.5"></i>
+              </span>
+              <div class="mt-5 text-[22px] font-semibold tracking-[-0.04em]">5</div>
+              <div class="mt-1 text-[8px] font-medium text-sky-700">Ready</div>
+            </div>
+
+            <div class="rounded-2xl bg-violet-50 p-3.5">
+              <span class="flex size-7 items-center justify-center rounded-lg bg-white text-violet-600 shadow-sm">
+                <i data-lucide="truck" class="size-3.5"></i>
+              </span>
+              <div class="mt-5 text-[22px] font-semibold tracking-[-0.04em]">5</div>
+              <div class="mt-1 text-[8px] font-medium text-violet-700">Shipped</div>
+            </div>
+          </div>
+
+          <div class="border-t border-zinc-100 px-5 py-4 md:px-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="size-2 rounded-full bg-amber-500"></span>
+                <span class="text-[9px] font-medium">8 orders need attention</span>
+              </div>
+              <span class="text-[8px] text-zinc-400">3 payment · 5 fulfilment</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-5 md:p-6 xl:col-span-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-[15px] font-semibold tracking-[-0.02em]">Markets</h2>
+              <p class="mt-1 text-[9px] text-zinc-400">Net revenue by active market.</p>
+            </div>
+            <a href="markets.html" class="flex size-8 items-center justify-center rounded-xl bg-zinc-100">
+              <i data-lucide="arrow-up-right" class="size-3.5"></i>
+            </a>
+          </div>
+
+          <div class="mt-5 space-y-4">
+            <div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100 text-[9px] font-semibold">DE</span>
+                  <div>
+                    <div class="text-[10px] font-semibold">Germany</div>
+                    <div class="mt-0.5 text-[8px] text-emerald-600">+18.4%</div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] font-semibold">€38.2k</div>
+                  <div class="mt-0.5 text-[8px] text-zinc-400">29.8%</div>
+                </div>
+              </div>
+              <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                <div class="h-full w-[79%] rounded-full bg-black"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100 text-[9px] font-semibold">ES</span>
+                  <div>
+                    <div class="text-[10px] font-semibold">Spain</div>
+                    <div class="mt-0.5 text-[8px] text-emerald-600">+9.2%</div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] font-semibold">€31.6k</div>
+                  <div class="mt-0.5 text-[8px] text-zinc-400">24.6%</div>
+                </div>
+              </div>
+              <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                <div class="h-full w-[66%] rounded-full bg-zinc-700"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100 text-[9px] font-semibold">FR</span>
+                  <div>
+                    <div class="text-[10px] font-semibold">France</div>
+                    <div class="mt-0.5 text-[8px] text-emerald-600">+7.1%</div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] font-semibold">€26.4k</div>
+                  <div class="mt-0.5 text-[8px] text-zinc-400">20.6%</div>
+                </div>
+              </div>
+              <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                <div class="h-full w-[55%] rounded-full bg-zinc-400"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="flex size-7 items-center justify-center rounded-lg bg-[#d8ff5f] text-[9px] font-semibold">NL</span>
+                  <div>
+                    <div class="text-[10px] font-semibold">Netherlands</div>
+                    <div class="mt-0.5 text-[8px] text-emerald-600">+22.8%</div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[10px] font-semibold">€17.9k</div>
+                  <div class="mt-0.5 text-[8px] text-zinc-400">14.0%</div>
+                </div>
+              </div>
+              <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-zinc-100">
+                <div class="h-full w-[38%] rounded-full bg-[#d8ff5f]"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="relative overflow-hidden rounded-[24px] bg-[#171715] p-5 text-white xl:col-span-3">
+          <div class="absolute -right-10 top-6 size-32 rounded-full bg-[#d8ff5f]/15 blur-3xl"></div>
+
+          <div class="relative">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-[9px] text-zinc-500">Inventory health</div>
+                <div class="mt-1 text-[15px] font-semibold tracking-[-0.02em]">12 need attention</div>
+              </div>
+              <span class="flex size-8 items-center justify-center rounded-xl bg-zinc-800">
+                <i data-lucide="warehouse" class="size-3.5 text-[#d8ff5f]"></i>
+              </span>
+            </div>
+
+            <div class="mt-6 flex items-center justify-center">
+              <div class="relative flex size-32 items-center justify-center rounded-full bg-zinc-800">
+                <div class="absolute inset-[9px] rounded-full bg-[#171715]"></div>
+                <div class="relative text-center">
+                  <div class="text-[28px] font-semibold tracking-[-0.05em]">94%</div>
+                  <div class="mt-1 text-[8px] text-zinc-500">in stock</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 space-y-2">
+              <div class="flex items-center justify-between rounded-xl bg-zinc-900 px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="size-2 rounded-full bg-amber-400"></span>
+                  <span class="text-[8px] text-zinc-400">Low stock</span>
+                </div>
+                <span class="text-[9px] font-semibold">9 SKUs</span>
+              </div>
+              <div class="flex items-center justify-between rounded-xl bg-zinc-900 px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="size-2 rounded-full bg-red-400"></span>
+                  <span class="text-[8px] text-zinc-400">Out of stock</span>
+                </div>
+                <span class="text-[9px] font-semibold">3 SKUs</span>
+              </div>
+            </div>
+
+            <a href="inventory.html" class="mt-4 flex h-9 items-center justify-center gap-2 rounded-xl bg-[#d8ff5f] text-[9px] font-semibold text-black">
+              Review inventory
+              <i data-lucide="arrow-right" class="size-3"></i>
+            </a>
+          </div>
+        </article>
+      </section>
+
+      <section class="mt-4 grid gap-4 xl:grid-cols-12">
+        <article class="panel overflow-hidden xl:col-span-7">
+          <div class="flex items-center justify-between px-5 py-5 md:px-6">
+            <div>
+              <h2 class="text-[15px] font-semibold tracking-[-0.02em]">Top products</h2>
+              <p class="mt-1 text-[9px] text-zinc-400">Products driving revenue this month.</p>
+            </div>
+            <a href="index.html" class="flex items-center gap-1 text-[9px] font-medium text-zinc-500">
+              Product catalogue
+              <i data-lucide="arrow-up-right" class="size-3"></i>
+            </a>
+          </div>
+
+          <div class="divide-y divide-zinc-100">
+            <div class="grid items-center gap-4 px-5 py-3.5 md:grid-cols-[minmax(250px,1fr)_90px_100px_110px] md:px-6">
+              <div class="flex min-w-0 items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=160&q=80" alt="Essential heavyweight tee" class="size-11 rounded-xl object-cover">
+                <div class="min-w-0">
+                  <div class="truncate text-[10px] font-semibold">Essential Heavyweight Tee</div>
+                  <div class="mt-1 text-[8px] text-zinc-400">Apparel · Black</div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">182</div>
+                <div class="mt-0.5 text-[8px] text-zinc-400">sold</div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">€12.4k</div>
+                <div class="mt-0.5 text-[8px] text-emerald-600">+18.2%</div>
+              </div>
+              <div class="hidden items-center gap-2 md:flex">
+                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                  <div class="h-full w-[78%] rounded-full bg-black"></div>
+                </div>
+                <span class="text-[8px] text-zinc-400">78%</span>
+              </div>
+            </div>
+
+            <div class="grid items-center gap-4 px-5 py-3.5 md:grid-cols-[minmax(250px,1fr)_90px_100px_110px] md:px-6">
+              <div class="flex min-w-0 items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=160&q=80" alt="Run 02 sneaker" class="size-11 rounded-xl object-cover">
+                <div class="min-w-0">
+                  <div class="truncate text-[10px] font-semibold">Run 02 Sneaker</div>
+                  <div class="mt-1 text-[8px] text-zinc-400">Footwear · Red</div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">146</div>
+                <div class="mt-0.5 text-[8px] text-zinc-400">sold</div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">€10.8k</div>
+                <div class="mt-0.5 text-[8px] text-emerald-600">+12.6%</div>
+              </div>
+              <div class="hidden items-center gap-2 md:flex">
+                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                  <div class="h-full w-[65%] rounded-full bg-zinc-700"></div>
+                </div>
+                <span class="text-[8px] text-zinc-400">65%</span>
+              </div>
+            </div>
+
+            <div class="grid items-center gap-4 px-5 py-3.5 md:grid-cols-[minmax(250px,1fr)_90px_100px_110px] md:px-6">
+              <div class="flex min-w-0 items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=160&q=80" alt="Leather carry bag" class="size-11 rounded-xl object-cover">
+                <div class="min-w-0">
+                  <div class="truncate text-[10px] font-semibold">Soft Leather Carry Bag</div>
+                  <div class="mt-1 text-[8px] text-zinc-400">Accessories · Brown</div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">98</div>
+                <div class="mt-0.5 text-[8px] text-zinc-400">sold</div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">€9.1k</div>
+                <div class="mt-0.5 text-[8px] text-emerald-600">+8.7%</div>
+              </div>
+              <div class="hidden items-center gap-2 md:flex">
+                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                  <div class="h-full w-[54%] rounded-full bg-zinc-400"></div>
+                </div>
+                <span class="text-[8px] text-zinc-400">54%</span>
+              </div>
+            </div>
+
+            <div class="grid items-center gap-4 px-5 py-3.5 md:grid-cols-[minmax(250px,1fr)_90px_100px_110px] md:px-6">
+              <div class="flex min-w-0 items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=160&q=80" alt="Minimal sneaker" class="size-11 rounded-xl object-cover">
+                <div class="min-w-0">
+                  <div class="truncate text-[10px] font-semibold">Minimal Court Sneaker</div>
+                  <div class="mt-1 text-[8px] text-zinc-400">Footwear · White</div>
+                </div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">87</div>
+                <div class="mt-0.5 text-[8px] text-zinc-400">sold</div>
+              </div>
+              <div class="hidden md:block">
+                <div class="text-[10px] font-semibold">€7.6k</div>
+                <div class="mt-0.5 text-[8px] text-emerald-600">+21.4%</div>
+              </div>
+              <div class="hidden items-center gap-2 md:flex">
+                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-zinc-100">
+                  <div class="h-full w-[46%] rounded-full bg-[#d8ff5f]"></div>
+                </div>
+                <span class="text-[8px] text-zinc-400">46%</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel overflow-hidden xl:col-span-5">
+          <div class="flex items-center justify-between px-5 py-5 md:px-6">
+            <div>
+              <h2 class="text-[15px] font-semibold tracking-[-0.02em]">Recent orders</h2>
+              <p class="mt-1 text-[9px] text-zinc-400">Latest transactions across Europe.</p>
+            </div>
+            <span class="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-[8px] font-medium text-emerald-700">
+              <span class="size-1.5 rounded-full bg-emerald-500"></span>
+              Live
+            </span>
+          </div>
+
+          <div class="divide-y divide-zinc-100">
+            <div class="flex items-center gap-3 px-5 py-3.5 md:px-6">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" class="size-9 rounded-full object-cover">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-semibold">#4821</span>
+                  <span class="rounded-full bg-emerald-50 px-2 py-0.5 text-[7px] font-semibold text-emerald-700">Paid</span>
+                </div>
+                <div class="mt-1 truncate text-[8px] text-zinc-400">Sofia Martinez · Spain</div>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-semibold">€189</div>
+                <div class="mt-1 text-[8px] text-zinc-400">10:42</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 px-5 py-3.5 md:px-6">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="size-9 rounded-full object-cover">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-semibold">#4822</span>
+                  <span class="rounded-full bg-amber-50 px-2 py-0.5 text-[7px] font-semibold text-amber-700">Processing</span>
+                </div>
+                <div class="mt-1 truncate text-[8px] text-zinc-400">Lukas Weber · Germany</div>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-semibold">€378</div>
+                <div class="mt-1 text-[8px] text-zinc-400">09:18</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 px-5 py-3.5 md:px-6">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" class="size-9 rounded-full object-cover">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-semibold">#4823</span>
+                  <span class="rounded-full bg-violet-50 px-2 py-0.5 text-[7px] font-semibold text-violet-700">Shipped</span>
+                </div>
+                <div class="mt-1 truncate text-[8px] text-zinc-400">Camille Bernard · France</div>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-semibold">€189</div>
+                <div class="mt-1 text-[8px] text-zinc-400">Yesterday</div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 px-5 py-3.5 md:px-6">
+              <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="" class="size-9 rounded-full object-cover">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-semibold">#4824</span>
+                  <span class="rounded-full bg-sky-50 px-2 py-0.5 text-[7px] font-semibold text-sky-700">Ready</span>
+                </div>
+                <div class="mt-1 truncate text-[8px] text-zinc-400">Daniel Costa · Portugal</div>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-semibold">€567</div>
+                <div class="mt-1 text-[8px] text-zinc-400">Yesterday</div>
+              </div>
+            </div>
+          </div>
+
+          <a href="orders.html" class="flex h-11 items-center justify-center gap-2 border-t border-zinc-100 text-[9px] font-medium text-zinc-500 transition hover:bg-zinc-50">
+            View all orders
+            <i data-lucide="arrow-right" class="size-3"></i>
+          </a>
+        </article>
+      </section>
+
+      <section class="mt-4 grid gap-4 md:grid-cols-3">
+        <article class="panel flex items-center gap-4 p-5">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+            <i data-lucide="credit-card" class="size-4"></i>
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="text-[10px] font-semibold">Payments healthy</div>
+            <div class="mt-1 text-[8px] text-zinc-400">Stripe success rate 98.7%</div>
+          </div>
+          <span class="size-2 rounded-full bg-emerald-500"></span>
+        </article>
+
+        <article class="panel flex items-center gap-4 p-5">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+            <i data-lucide="triangle-alert" class="size-4"></i>
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="text-[10px] font-semibold">3 stockouts detected</div>
+            <div class="mt-1 text-[8px] text-zinc-400">Replenishment recommended today</div>
+          </div>
+          <i data-lucide="arrow-up-right" class="size-3.5 text-zinc-400"></i>
+        </article>
+
+        <article class="panel flex items-center gap-4 p-5">
+          <span class="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+            <i data-lucide="truck" class="size-4"></i>
+          </span>
+          <div class="min-w-0 flex-1">
+            <div class="text-[10px] font-semibold">DHL on schedule</div>
+            <div class="mt-1 text-[8px] text-zinc-400">96.2% delivered within SLA</div>
+          </div>
+          <span class="size-2 rounded-full bg-emerald-500"></span>
+        </article>
       </section>
     </div>
   </main>
 </div>
-<script>lucide.createIcons();</script>
+
+<script>
+  function dashboardPage() {
+    return {
+      period: '30D',
+
+      periods: {
+        '7D': {
+          revenue: '€31,840',
+          growth: '+8.2%',
+          comparison: '€2,410 more than the previous 7 days',
+          gross: '€34.9k',
+          discounts: '−€1.6k',
+          returns: '−€1.4k',
+          start: 'Sep 19',
+          bars: [42, 58, 51, 67, 62, 78, 91]
+        },
+        '30D': {
+          revenue: '€128,460',
+          growth: '+14.6%',
+          comparison: '€16,340 more than the previous 30 days',
+          gross: '€141.2k',
+          discounts: '−€6.8k',
+          returns: '−€5.9k',
+          start: 'Aug 27',
+          bars: [31, 42, 38, 51, 46, 59, 55, 63, 49, 67, 62, 72, 68, 77, 71, 82, 78, 88, 81, 93]
+        },
+        '90D': {
+          revenue: '€361,920',
+          growth: '+21.3%',
+          comparison: '€63,420 more than the previous 90 days',
+          gross: '€397.8k',
+          discounts: '−€19.4k',
+          returns: '−€16.5k',
+          start: 'Jun 28',
+          bars: [24, 28, 31, 29, 35, 38, 42, 39, 44, 48, 46, 51, 55, 58, 54, 61, 66, 70, 76, 83]
+        }
+      }
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+  document.addEventListener('alpine:initialized', () => lucide.createIcons());
+</script>
 </body>
 </html>
