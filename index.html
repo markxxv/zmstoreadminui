@@ -13,6 +13,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Alpine.js -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('product', {
+                tags: ['Backpacks', 'Water-resistant']
+            });
+        });
+    </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style type="text/tailwindcss">
@@ -378,6 +385,246 @@
                                 x-model="translations[activeLang].description"
                                 class="w-full resize-none rounded-xl bg-zinc-50 px-4 py-3 text-[13px] leading-5 ring-1 ring-zinc-100 transition focus:bg-white focus:ring-zinc-300"
                             ></textarea>
+                        </div>
+
+                        <!-- Tags -->
+                        <div
+                            class="mt-5"
+                            x-data="{
+                                open: false,
+                                query: '',
+                                popular: [
+                                    'Backpacks',
+                                    'Water-resistant',
+                                    'Travel',
+                                    'Laptop bags',
+                                    'Outdoor',
+                                    'Everyday',
+                                    'Accessories'
+                                ],
+                                addTag(tag) {
+                                    const clean = tag.trim();
+                                    if (!clean) return;
+
+                                    const exists = $store.product.tags.some(
+                                        item => item.toLowerCase() === clean.toLowerCase()
+                                    );
+
+                                    if (!exists) {
+                                        $store.product.tags.push(clean);
+                                    }
+
+                                    this.query = '';
+                                    this.open = false;
+                                },
+                                removeTag(index) {
+                                    $store.product.tags.splice(index, 1);
+                                },
+                                matches(label) {
+                                    return !this.query || label.toLowerCase().includes(this.query.toLowerCase());
+                                }
+                            }"
+                        >
+                            <div class="mb-2 flex items-center justify-between">
+                                <div>
+                                    <label class="text-[11px] font-medium text-zinc-600">
+                                        Product tags
+                                    </label>
+
+                                    <p class="mt-0.5 text-[9px] text-zinc-400">
+                                        Used for storefront categories, filters and discovery.
+                                    </p>
+                                </div>
+
+                                <span
+                                    x-text="`${$store.product.tags.length} selected`"
+                                    class="text-[9px] font-medium text-zinc-400"
+                                ></span>
+                            </div>
+
+                            <div
+                                class="relative"
+                                @click.outside="open = false"
+                            >
+                                <div
+                                    class="flex min-h-12 flex-wrap items-center gap-1.5 rounded-xl bg-zinc-50 px-2.5 py-2 ring-1 ring-zinc-100 transition focus-within:bg-white focus-within:ring-zinc-300"
+                                >
+                                    <template x-for="(tag, index) in $store.product.tags" :key="tag">
+                                        <span
+                                            class="inline-flex h-7 items-center gap-1.5 rounded-lg bg-white pl-2.5 pr-1.5 text-[10px] font-medium text-zinc-700 shadow-sm ring-1 ring-zinc-200"
+                                        >
+                                            <span class="size-1.5 rounded-full bg-emerald-500"></span>
+
+                                            <span x-text="tag"></span>
+
+                                            <button
+                                                type="button"
+                                                @click.stop="removeTag(index)"
+                                                class="flex size-4 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-900"
+                                                aria-label="Remove tag"
+                                            >
+                                                <span class="-mt-px text-[13px] leading-none">×</span>
+                                            </button>
+                                        </span>
+                                    </template>
+
+                                    <div class="flex min-w-[150px] flex-1 items-center gap-2 px-1">
+                                        <i data-lucide="tag" class="size-3.5 shrink-0 text-zinc-400" stroke-width="1.7"></i>
+
+                                        <input
+                                            type="text"
+                                            x-model="query"
+                                            @focus="open = true"
+                                            @input="open = true"
+                                            @keydown.enter.prevent="addTag(query)"
+                                            @keydown.escape="open = false"
+                                            placeholder="Add tag..."
+                                            class="h-7 min-w-0 flex-1 bg-transparent text-[11px] placeholder:text-zinc-400"
+                                        >
+
+                                        <button
+                                            type="button"
+                                            @click="open = !open"
+                                            class="flex size-7 shrink-0 items-center justify-center rounded-lg text-zinc-400 transition hover:bg-white hover:text-black"
+                                            aria-label="Show tag suggestions"
+                                        >
+                                            <i
+                                                data-lucide="chevron-down"
+                                                class="size-3.5 transition-transform"
+                                                :class="open ? 'rotate-180' : ''"
+                                            ></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    x-show="open"
+                                    x-transition.origin.top
+                                    class="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-black/5"
+                                >
+                                    <div class="flex items-center justify-between px-2 pb-2 pt-1">
+                                        <span class="text-[9px] font-semibold uppercase tracking-[0.12em] text-zinc-400">
+                                            Popular categories
+                                        </span>
+
+                                        <span class="text-[9px] text-zinc-300">
+                                            Click to add
+                                        </span>
+                                    </div>
+
+                                    <div class="grid gap-1 sm:grid-cols-2">
+                                        <button
+                                            type="button"
+                                            x-show="matches('Backpacks')"
+                                            @click="addTag('Backpacks')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                                                <i data-lucide="backpack" class="size-3.5 text-zinc-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Backpacks</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Main category</span>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            x-show="matches('Water-resistant')"
+                                            @click="addTag('Water-resistant')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-sky-50">
+                                                <i data-lucide="droplets" class="size-3.5 text-sky-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Water-resistant</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Product feature</span>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            x-show="matches('Travel')"
+                                            @click="addTag('Travel')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-amber-50">
+                                                <i data-lucide="plane" class="size-3.5 text-amber-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Travel</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Use case</span>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            x-show="matches('Laptop bags')"
+                                            @click="addTag('Laptop bags')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-violet-50">
+                                                <i data-lucide="laptop" class="size-3.5 text-violet-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Laptop bags</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Product type</span>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            x-show="matches('Outdoor')"
+                                            @click="addTag('Outdoor')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-emerald-50">
+                                                <i data-lucide="mountain" class="size-3.5 text-emerald-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Outdoor</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Collection</span>
+                                            </span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            x-show="matches('Everyday')"
+                                            @click="addTag('Everyday')"
+                                            class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
+                                        >
+                                            <span class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                                                <i data-lucide="sun" class="size-3.5 text-zinc-600" stroke-width="1.7"></i>
+                                            </span>
+                                            <span>
+                                                <span class="block text-[10px] font-medium">Everyday</span>
+                                                <span class="mt-0.5 block text-[8px] text-zinc-400">Lifestyle</span>
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        x-show="query.trim() && !popular.some(item => item.toLowerCase() === query.trim().toLowerCase())"
+                                        @click="addTag(query)"
+                                        class="mt-1 flex w-full items-center gap-2 rounded-xl bg-zinc-50 px-3 py-2.5 text-left transition hover:bg-zinc-100"
+                                    >
+                                        <span class="flex size-6 items-center justify-center rounded-full bg-black text-white">
+                                            <i data-lucide="plus" class="size-3"></i>
+                                        </span>
+
+                                        <span class="text-[10px]">
+                                            Add
+                                            <span class="font-semibold" x-text="`“${query.trim()}”`"></span>
+                                        </span>
+
+                                        <span class="ml-auto text-[8px] text-zinc-400">
+                                            Enter
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Media -->
@@ -795,14 +1042,13 @@
 
                         <div class="p-5">
 
-                            <div class="mb-3 flex items-center gap-1.5">
-                                <span class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400">
-                                    BACKPACKS
-                                </span>
-
-                                <span class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400">
-                                    WATER-RESISTANT
-                                </span>
+                            <div class="mb-3 flex flex-wrap items-center gap-1.5">
+                                <template x-for="tag in $store.product.tags" :key="tag">
+                                    <span
+                                        x-text="tag.toUpperCase()"
+                                        class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400"
+                                    ></span>
+                                </template>
                             </div>
 
                             <h3
