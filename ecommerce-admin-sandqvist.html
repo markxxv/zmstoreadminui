@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Commerce Admin — Add Product</title>
+
+    <!-- Tailwind CSS v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+        }
+
+        @layer base {
+            body {
+                @apply bg-[#f6f6f3] text-zinc-950 antialiased;
+            }
+
+            input,
+            textarea,
+            select {
+                @apply outline-none;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+<div class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="fixed inset-y-0 left-0 z-30 hidden w-[236px] flex-col bg-[#11110f] px-4 py-5 text-white lg:flex">
+
+        <div class="flex items-center gap-3 px-2">
+            <div class="flex size-9 items-center justify-center rounded-xl bg-white text-black">
+                <i data-lucide="box" class="size-4.5" stroke-width="1.8"></i>
+            </div>
+
+            <div>
+                <div class="text-[14px] font-semibold tracking-[-0.02em]">Nord Commerce</div>
+                <div class="mt-0.5 text-[11px] text-zinc-500">Europe Store</div>
+            </div>
+        </div>
+
+        <nav class="mt-9 space-y-1 text-[13px]">
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="layout-dashboard" class="size-4" stroke-width="1.7"></i>
+                Dashboard
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 font-medium text-black">
+                <i data-lucide="package" class="size-4" stroke-width="1.7"></i>
+                Products
+
+                <span class="ml-auto rounded-md bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500">
+                    248
+                </span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="shopping-bag" class="size-4" stroke-width="1.7"></i>
+                Orders
+
+                <span class="ml-auto flex size-5 items-center justify-center rounded-full bg-[#d8ff5f] text-[10px] font-semibold text-black">
+                    8
+                </span>
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="users" class="size-4" stroke-width="1.7"></i>
+                Customers
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="warehouse" class="size-4" stroke-width="1.7"></i>
+                Inventory
+            </a>
+
+            <div class="px-3 pb-2 pt-7 text-[10px] font-medium uppercase tracking-[0.16em] text-zinc-600">
+                Business
+            </div>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="building-2" class="size-4" stroke-width="1.7"></i>
+                B2B
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="globe-2" class="size-4" stroke-width="1.7"></i>
+                Markets
+            </a>
+
+            <a href="#" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-zinc-400 transition hover:bg-zinc-900 hover:text-white">
+                <i data-lucide="plug" class="size-4" stroke-width="1.7"></i>
+                Integrations
+            </a>
+        </nav>
+
+        <div class="mt-auto">
+
+            <div class="rounded-2xl bg-zinc-900 p-3.5">
+                <div class="flex items-center gap-2">
+                    <div class="size-2 rounded-full bg-[#d8ff5f]"></div>
+                    <span class="text-[11px] font-medium text-zinc-300">All systems operational</span>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between text-[10px] text-zinc-600">
+                    <span>ERP</span>
+                    <span>Warehouse</span>
+                    <span>Payments</span>
+                </div>
+            </div>
+
+            <div class="mt-4 flex items-center gap-3 px-2">
+                <div class="flex size-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium">
+                    AM
+                </div>
+
+                <div class="min-w-0">
+                    <div class="truncate text-xs font-medium">Anna Müller</div>
+                    <div class="text-[10px] text-zinc-600">Administrator</div>
+                </div>
+
+                <i data-lucide="chevrons-up-down" class="ml-auto size-3.5 text-zinc-600"></i>
+            </div>
+
+        </div>
+    </aside>
+
+
+    <!-- Main -->
+    <main class="w-full lg:pl-[236px]">
+
+        <!-- Header -->
+        <header class="sticky top-0 z-20 border-b border-black/5 bg-[#f6f6f3]/90 backdrop-blur-xl">
+            <div class="flex h-[70px] items-center justify-between px-5 md:px-8 xl:px-10">
+
+                <div class="flex items-center gap-3">
+                    <button class="flex size-9 items-center justify-center rounded-xl bg-white shadow-sm lg:hidden">
+                        <i data-lucide="menu" class="size-4"></i>
+                    </button>
+
+                    <div class="flex items-center gap-2 text-[12px] text-zinc-400">
+                        <span>Products</span>
+                        <i data-lucide="chevron-right" class="size-3"></i>
+                        <span class="text-zinc-800">New product</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+
+                    <div class="mr-3 hidden items-center gap-2 md:flex">
+                        <div class="size-1.5 rounded-full bg-amber-400"></div>
+                        <span class="text-[11px] text-zinc-500">Draft saved</span>
+                    </div>
+
+                    <button class="flex h-9 items-center gap-2 rounded-xl bg-white px-3.5 text-[12px] font-medium shadow-sm transition hover:bg-zinc-50">
+                        <i data-lucide="eye" class="size-3.5"></i>
+                        Preview
+                    </button>
+
+                    <button
+                        onclick="publishProduct(this)"
+                        class="flex h-9 items-center gap-2 rounded-xl bg-black px-4 text-[12px] font-medium text-white transition hover:bg-zinc-800"
+                    >
+                        <span>Publish product</span>
+                        <i data-lucide="arrow-up-right" class="size-3.5"></i>
+                    </button>
+
+                </div>
+            </div>
+        </header>
+
+
+        <!-- Content -->
+        <div class="mx-auto max-w-[1460px] px-5 py-7 md:px-8 xl:px-10">
+
+            <!-- Intro -->
+            <div class="mb-7 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+                <div>
+                    <div class="mb-2 flex items-center gap-2">
+                        <div class="flex size-5 items-center justify-center rounded-md bg-[#d8ff5f]">
+                            <i data-lucide="sparkles" class="size-3 text-black"></i>
+                        </div>
+
+                        <span class="text-[11px] font-medium text-zinc-500">
+                            Product workspace
+                        </span>
+                    </div>
+
+                    <h1 class="text-[30px] font-semibold tracking-[-0.045em] md:text-[38px]">
+                        Add a new product
+                    </h1>
+
+                    <p class="mt-2 max-w-xl text-[13px] leading-5 text-zinc-500">
+                        Product information, markets, pricing and inventory are managed from one place.
+                    </p>
+                </div>
+
+                <!-- Completion -->
+                <div class="w-full max-w-[280px]">
+                    <div class="mb-2 flex justify-between text-[10px]">
+                        <span class="text-zinc-500">Product completeness</span>
+                        <span class="font-medium">88%</span>
+                    </div>
+
+                    <div class="h-1 overflow-hidden rounded-full bg-zinc-200">
+                        <div class="h-full w-[88%] rounded-full bg-black"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
+
+                <!-- Form -->
+                <div class="space-y-5">
+
+                    <!-- Main info -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
+
+                        <div class="mb-6 flex items-center justify-between">
+                            <div>
+                                <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
+                                    Product information
+                                </h2>
+
+                                <p class="mt-1 text-[11px] text-zinc-400">
+                                    Basic information visible to customers.
+                                </p>
+                            </div>
+
+                            <div class="flex items-center gap-1 rounded-lg bg-zinc-100 p-1 text-[10px]">
+                                <button class="rounded-md bg-white px-2.5 py-1 font-medium shadow-sm">EN</button>
+                                <button class="px-2.5 py-1 text-zinc-500">DE</button>
+                                <button class="px-2.5 py-1 text-zinc-500">FR</button>
+                                <button class="px-2.5 py-1 text-zinc-500">ES</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="mb-2 block text-[11px] font-medium text-zinc-600">
+                                Product name
+                            </label>
+
+                            <input
+                                id="productName"
+                                oninput="updatePreview()"
+                                value="STREAM Rolltop Backpack L"
+                                class="h-12 w-full rounded-xl bg-zinc-50 px-4 text-[14px] font-medium tracking-[-0.01em] ring-1 ring-zinc-100 transition focus:bg-white focus:ring-zinc-300"
+                            >
+                        </div>
+
+                        <div class="mt-5">
+                            <div class="mb-2 flex items-center justify-between">
+                                <label class="text-[11px] font-medium text-zinc-600">
+                                    Description
+                                </label>
+
+                                <span class="text-[10px] text-zinc-400">
+                                    Product description
+                                </span>
+                            </div>
+
+                            <textarea
+                                rows="4"
+                                class="w-full resize-none rounded-xl bg-zinc-50 px-4 py-3 text-[13px] leading-5 ring-1 ring-zinc-100 transition focus:bg-white focus:ring-zinc-300"
+                            >Large water-resistant rolltop backpack designed for everyday commuting. 34 L capacity with a padded 16-inch laptop compartment, waterproof zippers, spacious front storage, side slip pockets and adjustable compression straps.</textarea>
+                        </div>
+
+                        <!-- Media -->
+                        <div class="mt-5">
+                            <div class="mb-2 flex items-center justify-between">
+                                <label class="text-[11px] font-medium text-zinc-600">
+                                    Media
+                                </label>
+
+                                <span class="text-[10px] text-zinc-400">
+                                    4 images · Drag to reorder
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-4 gap-2 md:grid-cols-6">
+
+                                <div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f1f1f1]">
+                                    <img
+                                        src="https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg"
+                                        alt="STREAM Rolltop Backpack L in Clay — front"
+                                        class="h-full w-full object-cover"
+                                    >
+
+                                    <div class="absolute left-2 top-2 rounded-md bg-black px-1.5 py-1 text-[8px] font-medium text-white">
+                                        COVER
+                                    </div>
+                                </div>
+
+                                <div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f1f1f1]">
+                                    <img
+                                        src="https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg"
+                                        alt="STREAM Rolltop Backpack L in Clay — side view"
+                                        class="h-full w-full object-cover"
+                                    >
+                                </div>
+
+                                <div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f1f1f1]">
+                                    <img
+                                        src="https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg"
+                                        alt="STREAM Rolltop Backpack L in Clay — back"
+                                        class="h-full w-full object-cover"
+                                    >
+                                </div>
+
+                                <div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f1f1f1]">
+                                    <img
+                                        src="https://media.crystallize.com/sandqvist/26/8/4/e206675e/257505206-8.jpg"
+                                        alt="STREAM Rolltop Backpack L — detail"
+                                        class="h-full w-full object-cover"
+                                    >
+                                </div>
+
+                                <button class="flex aspect-[4/5] flex-col items-center justify-center gap-2 rounded-xl bg-zinc-50 text-zinc-400 ring-1 ring-dashed ring-zinc-200 transition hover:bg-zinc-100 hover:text-black">
+                                    <i data-lucide="plus" class="size-4"></i>
+                                    <span class="text-[9px]">Add media</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <!-- Pricing -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
+
+                        <div class="mb-5 flex items-start justify-between">
+                            <div>
+                                <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
+                                    Pricing
+                                </h2>
+
+                                <p class="mt-1 text-[11px] text-zinc-400">
+                                    Separate conditions for retail and business customers.
+                                </p>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-[10px] text-zinc-500">
+                                <i data-lucide="badge-euro" class="size-3.5"></i>
+                                EUR
+                            </div>
+                        </div>
+
+                        <div class="grid gap-3 md:grid-cols-2">
+
+                            <div class="rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-100">
+                                <div class="mb-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex size-7 items-center justify-center rounded-lg bg-white shadow-sm">
+                                            <i data-lucide="user" class="size-3.5"></i>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-[11px] font-semibold">Retail · B2C</div>
+                                            <div class="text-[9px] text-zinc-400">Public store price</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-md bg-[#e8ffd0] px-2 py-1 text-[9px] font-medium text-[#345c12]">
+                                        ACTIVE
+                                    </div>
+                                </div>
+
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-[13px] text-zinc-400">€</span>
+                                    <input
+                                        id="price"
+                                        oninput="updatePreview()"
+                                        value="189"
+                                        class="w-full bg-transparent text-[26px] font-semibold tracking-[-0.04em]"
+                                    >
+                                </div>
+
+                                <div class="mt-3 text-[9px] text-zinc-400">
+                                    VAT calculated by customer market
+                                </div>
+                            </div>
+
+
+                            <div class="rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-100">
+                                <div class="mb-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex size-7 items-center justify-center rounded-lg bg-white shadow-sm">
+                                            <i data-lucide="building-2" class="size-3.5"></i>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-[11px] font-semibold">Partners · B2B</div>
+                                            <div class="text-[9px] text-zinc-400">Authorized accounts</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="rounded-md bg-zinc-200 px-2 py-1 text-[9px] font-medium text-zinc-600">
+                                        PRIVATE
+                                    </div>
+                                </div>
+
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-[13px] text-zinc-400">€</span>
+                                    <input
+                                        value="132"
+                                        class="w-full bg-transparent text-[26px] font-semibold tracking-[-0.04em]"
+                                    >
+                                </div>
+
+                                <div class="mt-3 flex items-center gap-1 text-[9px] text-zinc-400">
+                                    <i data-lucide="lock" class="size-2.5"></i>
+                                    Visible after partner login
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                    <!-- Markets -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
+
+                        <div class="flex items-start justify-between gap-5">
+
+                            <div>
+                                <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
+                                    Markets
+                                </h2>
+
+                                <p class="mt-1 text-[11px] text-zinc-400">
+                                    Control availability without creating duplicate products.
+                                </p>
+                            </div>
+
+                            <button class="flex items-center gap-1.5 text-[10px] font-medium">
+                                <i data-lucide="settings-2" class="size-3"></i>
+                                Market settings
+                            </button>
+
+                        </div>
+
+                        <div class="mt-5 divide-y divide-zinc-100">
+
+                            <div class="flex items-center py-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-[#fff3d9] text-[16px]">🇪🇸</div>
+
+                                <div class="ml-3">
+                                    <div class="text-[11px] font-medium">Spain</div>
+                                    <div class="mt-0.5 text-[9px] text-zinc-400">EUR · VAT 21% · ES / EN</div>
+                                </div>
+
+                                <div class="ml-auto mr-5 hidden text-right sm:block">
+                                    <div class="text-[10px] font-medium">Barcelona warehouse</div>
+                                    <div class="text-[9px] text-emerald-600">36 available</div>
+                                </div>
+
+                                <button class="relative h-5 w-9 rounded-full bg-black">
+                                    <span class="absolute right-0.5 top-0.5 size-4 rounded-full bg-white"></span>
+                                </button>
+                            </div>
+
+
+                            <div class="flex items-center py-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-zinc-100 text-[16px]">🇩🇪</div>
+
+                                <div class="ml-3">
+                                    <div class="text-[11px] font-medium">Germany</div>
+                                    <div class="mt-0.5 text-[9px] text-zinc-400">EUR · VAT 19% · DE / EN</div>
+                                </div>
+
+                                <div class="ml-auto mr-5 hidden text-right sm:block">
+                                    <div class="text-[10px] font-medium">EU shared stock</div>
+                                    <div class="text-[9px] text-emerald-600">36 available</div>
+                                </div>
+
+                                <button class="relative h-5 w-9 rounded-full bg-black">
+                                    <span class="absolute right-0.5 top-0.5 size-4 rounded-full bg-white"></span>
+                                </button>
+                            </div>
+
+
+                            <div class="flex items-center py-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-zinc-100 text-[16px]">🇫🇷</div>
+
+                                <div class="ml-3">
+                                    <div class="text-[11px] font-medium">France</div>
+                                    <div class="mt-0.5 text-[9px] text-zinc-400">EUR · VAT 20% · FR / EN</div>
+                                </div>
+
+                                <div class="ml-auto mr-5 hidden text-right sm:block">
+                                    <div class="text-[10px] font-medium">EU shared stock</div>
+                                    <div class="text-[9px] text-emerald-600">36 available</div>
+                                </div>
+
+                                <button class="relative h-5 w-9 rounded-full bg-black">
+                                    <span class="absolute right-0.5 top-0.5 size-4 rounded-full bg-white"></span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                    <!-- Product details -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
+
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
+                                    Product details
+                                </h2>
+
+                                <p class="mt-1 text-[11px] text-zinc-400">
+                                    Core product attributes used across storefronts and integrations.
+                                </p>
+                            </div>
+
+                            <button class="flex h-8 items-center gap-1.5 rounded-lg bg-zinc-100 px-3 text-[10px] font-medium transition hover:bg-zinc-200">
+                                <i data-lucide="pencil" class="size-3"></i>
+                                Edit
+                            </button>
+                        </div>
+
+                        <div class="mt-5 grid gap-2 sm:grid-cols-2">
+
+                            <div class="rounded-xl bg-zinc-50 p-3.5">
+                                <div class="text-[9px] text-zinc-400">
+                                    Color
+                                </div>
+
+                                <div class="mt-2 flex items-center gap-2">
+                                    <span class="size-3 rounded-full bg-[#a2947c]"></span>
+                                    <span class="text-[11px] font-medium">Clay</span>
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl bg-zinc-50 p-3.5">
+                                <div class="text-[9px] text-zinc-400">
+                                    Capacity
+                                </div>
+
+                                <div class="mt-2 text-[11px] font-medium">
+                                    34 L
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl bg-zinc-50 p-3.5">
+                                <div class="text-[9px] text-zinc-400">
+                                    Dimensions
+                                </div>
+
+                                <div class="mt-2 text-[11px] font-medium">
+                                    27 × 67 × 16 cm
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl bg-zinc-50 p-3.5">
+                                <div class="text-[9px] text-zinc-400">
+                                    Laptop
+                                </div>
+
+                                <div class="mt-2 flex items-center gap-2 text-[11px] font-medium">
+                                    <i data-lucide="laptop" class="size-3.5 text-zinc-400"></i>
+                                    Up to 16″
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- Side panel -->
+                <aside class="space-y-5">
+
+                    <!-- Preview -->
+                    <section class="overflow-hidden rounded-[22px] bg-[#171715] text-white shadow-xl shadow-black/5">
+
+                        <div class="flex items-center justify-between px-5 py-4">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="eye" class="size-3.5 text-zinc-500"></i>
+                                <span class="text-[10px] font-medium text-zinc-400">Store preview</span>
+                            </div>
+
+                            <div class="flex gap-1">
+                                <span class="size-1.5 rounded-full bg-[#d8ff5f]"></span>
+                                <span class="size-1.5 rounded-full bg-zinc-700"></span>
+                                <span class="size-1.5 rounded-full bg-zinc-700"></span>
+                            </div>
+                        </div>
+
+                        <div class="mx-3 overflow-hidden rounded-[16px] bg-[#efefef]">
+                            <div class="relative aspect-[4/5]">
+
+                                <img
+                                    src="https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg"
+                                    alt="STREAM Rolltop Backpack L in Clay"
+                                    class="h-full w-full object-cover"
+                                >
+
+                                <div class="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-[8px] font-medium text-black shadow-sm">
+                                    STREAM
+                                </div>
+
+                                <button
+                                    class="absolute bottom-3 right-3 flex size-8 items-center justify-center rounded-full bg-white text-black shadow-sm"
+                                >
+                                    <i data-lucide="maximize-2" class="size-3"></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                        <div class="p-5">
+
+                            <div class="mb-3 flex items-center gap-1.5">
+                                <span class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400">
+                                    BACKPACKS
+                                </span>
+
+                                <span class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400">
+                                    WATER-RESISTANT
+                                </span>
+                            </div>
+
+                            <h3
+                                id="previewName"
+                                class="text-[19px] font-medium tracking-[-0.035em]"
+                            >
+                                STREAM Rolltop Backpack L
+                            </h3>
+
+                            <p class="mt-2 text-[10px] leading-4 text-zinc-500">
+                                34 L · Clay · 16″ laptop compartment
+                            </p>
+
+                            <div class="mt-4 flex items-center justify-between">
+
+                                <div
+                                    id="previewPrice"
+                                    class="text-[17px] font-medium tracking-[-0.02em]"
+                                >
+                                    €189
+                                </div>
+
+                                <div class="flex items-center gap-1.5 text-[9px] text-zinc-500">
+                                    <div class="size-1.5 rounded-full bg-[#d8ff5f]"></div>
+                                    In stock
+                                </div>
+
+                            </div>
+
+                            <button
+                                class="mt-5 flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-white text-[10px] font-semibold text-black"
+                            >
+                                Add to cart
+                                <i data-lucide="arrow-right" class="size-3"></i>
+                            </button>
+
+                        </div>
+                    </section>
+
+
+                    <!-- Inventory -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                                    <i data-lucide="warehouse" class="size-3.5"></i>
+                                </div>
+
+                                <span class="text-[11px] font-semibold">Inventory</span>
+                            </div>
+
+                            <button class="text-[9px] font-medium text-zinc-400">
+                                Manage
+                            </button>
+                        </div>
+
+                        <div class="mt-5 flex items-end justify-between">
+                            <div>
+                                <div class="text-[28px] font-semibold tracking-[-0.05em]">
+                                    36
+                                </div>
+
+                                <div class="text-[9px] text-zinc-400">
+                                    units available
+                                </div>
+                            </div>
+
+                            <div class="flex h-8 items-end gap-1">
+                                <div class="h-[30%] w-1.5 rounded-full bg-zinc-200"></div>
+                                <div class="h-[55%] w-1.5 rounded-full bg-zinc-200"></div>
+                                <div class="h-[45%] w-1.5 rounded-full bg-zinc-200"></div>
+                                <div class="h-[70%] w-1.5 rounded-full bg-zinc-300"></div>
+                                <div class="h-[90%] w-1.5 rounded-full bg-black"></div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5">
+                            <div>
+                                <div class="text-[9px] text-zinc-400">SKU</div>
+                                <div class="mt-0.5 font-mono text-[10px] font-medium">
+                                    257505206
+                                </div>
+                            </div>
+
+                            <i data-lucide="copy" class="size-3 text-zinc-400"></i>
+                        </div>
+
+                    </section>
+
+
+                    <!-- Connections -->
+                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+
+                        <div class="mb-4 flex items-center justify-between">
+                            <span class="text-[11px] font-semibold">Connected systems</span>
+
+                            <div class="size-2 rounded-full bg-[#d8ff5f]"></div>
+                        </div>
+
+                        <div class="space-y-3">
+
+                            <div class="flex items-center gap-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-zinc-100">
+                                    <i data-lucide="database" class="size-3.5"></i>
+                                </div>
+
+                                <div>
+                                    <div class="text-[10px] font-medium">ERP</div>
+                                    <div class="text-[8px] text-zinc-400">Product sync active</div>
+                                </div>
+
+                                <i data-lucide="check" class="ml-auto size-3 text-emerald-600"></i>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-zinc-100">
+                                    <i data-lucide="credit-card" class="size-3.5"></i>
+                                </div>
+
+                                <div>
+                                    <div class="text-[10px] font-medium">Stripe</div>
+                                    <div class="text-[8px] text-zinc-400">Payments connected</div>
+                                </div>
+
+                                <i data-lucide="check" class="ml-auto size-3 text-emerald-600"></i>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="flex size-8 items-center justify-center rounded-lg bg-zinc-100">
+                                    <i data-lucide="truck" class="size-3.5"></i>
+                                </div>
+
+                                <div>
+                                    <div class="text-[10px] font-medium">DHL</div>
+                                    <div class="text-[8px] text-zinc-400">Shipping rates live</div>
+                                </div>
+
+                                <i data-lucide="check" class="ml-auto size-3 text-emerald-600"></i>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+        </div>
+    </main>
+</div>
+
+
+<!-- Publish notification -->
+<div
+    id="toast"
+    class="fixed bottom-5 right-5 z-50 translate-y-3 rounded-2xl bg-black px-4 py-3 text-white opacity-0 shadow-2xl transition-all duration-300"
+>
+    <div class="flex items-center gap-3">
+
+        <div class="flex size-7 items-center justify-center rounded-full bg-[#d8ff5f] text-black">
+            <i data-lucide="check" class="size-3.5"></i>
+        </div>
+
+        <div>
+            <div class="text-[11px] font-medium">Product published</div>
+            <div class="mt-0.5 text-[9px] text-zinc-500">
+                Available across 3 markets
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    lucide.createIcons();
+
+    function updatePreview() {
+        const name = document.getElementById('productName').value || 'Untitled product';
+        const price = document.getElementById('price').value || '0';
+
+        document.getElementById('previewName').textContent = name;
+        document.getElementById('previewPrice').textContent = `€${price}`;
+    }
+
+    function publishProduct(button) {
+        const toast = document.getElementById('toast');
+
+        button.innerHTML = `
+            <i data-lucide="loader-circle" class="size-3.5 animate-spin"></i>
+            <span>Publishing...</span>
+        `;
+
+        lucide.createIcons();
+
+        setTimeout(() => {
+            button.innerHTML = `
+                <i data-lucide="check" class="size-3.5"></i>
+                <span>Published</span>
+            `;
+
+            toast.classList.remove('translate-y-3', 'opacity-0');
+
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-3', 'opacity-0');
+            }, 2600);
+        }, 700);
+    }
+</script>
+
+</body>
+</html>
