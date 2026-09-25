@@ -820,7 +820,7 @@
                         <div class="mt-5 space-y-2">
                             <template x-for="(variant, index) in variants" :key="index">
                                 <div
-                                    class="group grid gap-3 rounded-2xl bg-zinc-50 p-2.5 transition hover:bg-zinc-100/70 md:grid-cols-[76px_minmax(0,1.2fr)_minmax(0,1fr)_90px_100px_34px] md:items-center"
+                                    class="group grid gap-3 rounded-2xl bg-zinc-50 p-2.5 transition hover:bg-zinc-100/70 md:grid-cols-[76px_minmax(0,1.2fr)_minmax(0,1fr)_116px_110px_34px] md:items-center"
                                 >
                                     <!-- Variant image -->
                                     <label
@@ -849,10 +849,11 @@
                                         </template>
 
                                         <span
-                                            class="absolute bottom-1.5 right-1.5 flex size-5 items-center justify-center rounded-full bg-white text-[13px] font-medium leading-none text-zinc-800 shadow-sm transition group-hover:bg-black group-hover:text-white"
+                                            class="absolute bottom-1.5 right-1.5 flex size-5 items-center justify-center rounded-full bg-white shadow-sm transition group-hover:bg-black"
                                             aria-hidden="true"
                                         >
-                                            +
+                                            <span class="absolute h-px w-2 bg-zinc-800 transition group-hover:bg-white"></span>
+                                            <span class="absolute h-2 w-px bg-zinc-800 transition group-hover:bg-white"></span>
                                         </span>
                                     </label>
 
@@ -885,30 +886,31 @@
                                         <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
                                             Stock
                                         </label>
-                                        <div class="flex h-9 items-center justify-between gap-1 rounded-lg bg-white px-2 shadow-sm">
+                                        <div class="flex h-9 items-center justify-between gap-2 rounded-lg bg-white px-2.5 shadow-sm">
                                             <button
                                                 type="button"
                                                 @click="variant.stock = Math.max(0, Number(variant.stock) - 1)"
-                                                class="flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[14px] font-medium leading-none text-zinc-500 transition hover:bg-black hover:text-white active:scale-95"
+                                                class="group relative flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 transition hover:bg-black active:scale-95"
                                                 aria-label="Decrease stock"
                                             >
-                                                −
+                                                <span class="absolute h-px w-2 bg-zinc-500 transition group-hover:bg-white"></span>
                                             </button>
 
                                             <input
                                                 type="number"
                                                 min="0"
                                                 x-model.number="variant.stock"
-                                                class="w-9 bg-transparent text-center text-[10px] font-semibold outline-none"
+                                                class="w-8 bg-transparent text-center text-[10px] font-semibold tabular-nums outline-none"
                                             >
 
                                             <button
                                                 type="button"
                                                 @click="variant.stock = Number(variant.stock) + 1"
-                                                class="flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[14px] font-medium leading-none text-zinc-500 transition hover:bg-black hover:text-white active:scale-95"
+                                                class="group relative flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 transition hover:bg-black active:scale-95"
                                                 aria-label="Increase stock"
                                             >
-                                                +
+                                                <span class="absolute h-px w-2 bg-zinc-500 transition group-hover:bg-white"></span>
+                                                <span class="absolute h-2 w-px bg-zinc-500 transition group-hover:bg-white"></span>
                                             </button>
                                         </div>
                                     </div>
