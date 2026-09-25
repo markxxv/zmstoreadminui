@@ -674,10 +674,10 @@
                             class="mt-5"
                             x-data="{
                                 images: [
-                                    { id: 'media-1', src: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg', name: 'STREAM front' },
-                                    { id: 'media-2', src: 'https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg', name: 'STREAM side' },
-                                    { id: 'media-3', src: 'https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg', name: 'STREAM back' },
-                                    { id: 'media-4', src: 'https://media.crystallize.com/sandqvist/26/8/4/e206675e/257505206-8.jpg', name: 'STREAM detail' }
+                                    { id: 'media-1', src: 'img/sandqvist-stream-clay-front.jpg', name: 'STREAM front' },
+                                    { id: 'media-2', src: 'img/sandqvist-stream-clay-side.jpg', name: 'STREAM side' },
+                                    { id: 'media-3', src: 'img/sandqvist-stream-clay-back.jpg', name: 'STREAM back' },
+                                    { id: 'media-4', src: 'img/sandqvist-stream-clay-detail.jpg', name: 'STREAM detail' }
                                 ],
                                 addFiles(event) {
                                     const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
@@ -780,7 +780,7 @@
                                     sku: '257505206',
                                     stock: 14,
                                     price: 189,
-                                    image: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg'
+                                    image: 'img/sandqvist-stream-clay-front.jpg'
                                 },
                                 {
                                     id: 'variant-navy',
@@ -788,7 +788,7 @@
                                     sku: '257505555',
                                     stock: 12,
                                     price: 189,
-                                    image: 'https://media.crystallize.com/sandqvist/25/10/16/139/257505555-1.jpg'
+                                    image: 'img/sandqvist-stream-navy-front.jpg'
                                 },
                                 {
                                     id: 'variant-black',
@@ -796,7 +796,7 @@
                                     sku: '257505999',
                                     stock: 10,
                                     price: 189,
-                                    image: 'https://media.crystallize.com/sandqvist/25/10/16/130/257505999-1.jpg'
+                                    image: 'img/sandqvist-stream-black-front.jpg'
                                 }
                             ],
                             uploadVariantImage(event, index) {
@@ -1325,7 +1325,7 @@
                             <div class="relative aspect-[4/5]">
 
                                 <img
-                                    src="https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg"
+                                    src="img/sandqvist-stream-clay-front.jpg"
                                     alt="STREAM Rolltop Backpack L in Clay"
                                     class="h-full w-full object-cover"
                                 >
