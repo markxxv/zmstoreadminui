@@ -12,6 +12,9 @@
     <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+
     <!-- Alpine.js -->
     <script>
         document.addEventListener('alpine:init', () => {
@@ -47,6 +50,29 @@
             input[type="number"]::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
+            }
+
+            .sortable-ghost {
+                opacity: .18;
+                transform: scale(.985);
+            }
+
+            .sortable-chosen {
+                cursor: grabbing;
+            }
+
+            .sortable-drag {
+                transform: scale(1.015);
+                box-shadow: 0 18px 50px rgba(0, 0, 0, .12);
+            }
+
+            .sortable-ghost,
+            .sortable-chosen,
+            .sortable-drag {
+                transition:
+                    transform 220ms cubic-bezier(.2, .8, .2, 1),
+                    box-shadow 220ms cubic-bezier(.2, .8, .2, 1),
+                    opacity 180ms ease;
             }
         }
     </style>
@@ -648,10 +674,10 @@
                             class="mt-5"
                             x-data="{
                                 images: [
-                                    { src: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg', name: 'STREAM front' },
-                                    { src: 'https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg', name: 'STREAM side' },
-                                    { src: 'https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg', name: 'STREAM back' },
-                                    { src: 'https://media.crystallize.com/sandqvist/26/8/4/e206675e/257505206-8.jpg', name: 'STREAM detail' }
+                                    { id: 'media-1', src: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg', name: 'STREAM front' },
+                                    { id: 'media-2', src: 'https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg', name: 'STREAM side' },
+                                    { id: 'media-3', src: 'https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg', name: 'STREAM back' },
+                                    { id: 'media-4', src: 'https://media.crystallize.com/sandqvist/26/8/4/e206675e/257505206-8.jpg', name: 'STREAM detail' }
                                 ],
                                 addFiles(event) {
                                     const files = Array.from(event.target.files || []).filter(file => file.type.startsWith('image/'));
@@ -661,6 +687,7 @@
 
                                         reader.onload = e => {
                                             this.images.push({
+                                                id: 'media-' + Date.now() + '-' + Math.random().toString(36).slice(2),
                                                 src: e.target.result,
                                                 name: file.name
                                             });
@@ -672,6 +699,10 @@
                                     event.target.value = '';
                                 }
                             }"
+                            x-init="$nextTick(() => createSmoothSortable($refs.mediaGrid, images, {
+                                draggable: '[data-media-item]',
+                                filter: '[data-no-drag]'
+                            }))"
                         >
                             <div class="mb-2 flex items-center justify-between">
                                 <label class="text-[11px] font-medium text-zinc-600">
@@ -684,10 +715,13 @@
                                 ></span>
                             </div>
 
-                            <div class="grid grid-cols-4 gap-2 md:grid-cols-6">
+                            <div x-ref="mediaGrid" class="grid grid-cols-4 gap-2 md:grid-cols-6">
 
-                                <template x-for="(image, index) in images" :key="image.src + index">
-                                    <div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f1f1f1]">
+                                <template x-for="(image, index) in images" :key="image.id">
+                                    <div
+                                        data-media-item
+                                        class="group relative aspect-[4/5] cursor-grab overflow-hidden rounded-xl bg-[#f1f1f1] active:cursor-grabbing"
+                                    >
                                         <img
                                             :src="image.src"
                                             :alt="image.name"
@@ -703,6 +737,7 @@
 
                                         <button
                                             type="button"
+                                            data-no-drag
                                             @click="images.splice(index, 1)"
                                             class="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full bg-white text-zinc-900 opacity-0 shadow-sm transition hover:bg-zinc-100 group-hover:opacity-100 focus:opacity-100"
                                             aria-label="Remove image"
@@ -740,6 +775,7 @@
                         x-data="{
                             variants: [
                                 {
+                                    id: 'variant-clay',
                                     name: 'Clay',
                                     sku: '257505206',
                                     stock: 14,
@@ -747,6 +783,7 @@
                                     image: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg'
                                 },
                                 {
+                                    id: 'variant-navy',
                                     name: 'Navy',
                                     sku: '257505555',
                                     stock: 12,
@@ -754,6 +791,7 @@
                                     image: 'https://media.crystallize.com/sandqvist/25/10/16/139/257505555-1.jpg'
                                 },
                                 {
+                                    id: 'variant-black',
                                     name: 'Black',
                                     sku: '257505999',
                                     stock: 10,
@@ -774,6 +812,7 @@
                             },
                             addVariant() {
                                 this.variants.push({
+                                    id: 'variant-' + Date.now() + '-' + Math.random().toString(36).slice(2),
                                     name: 'New variant',
                                     sku: '257505206-NEW',
                                     stock: 0,
@@ -787,6 +826,10 @@
                                 this.variants.splice(index, 1);
                             }
                         }"
+                        x-init="$nextTick(() => createSmoothSortable($refs.variantList, variants, {
+                            draggable: '[data-variant-item]',
+                            handle: '[data-drag-handle]'
+                        }))"
                         class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6"
                     >
 
@@ -817,11 +860,29 @@
                             </button>
                         </div>
 
-                        <div class="mt-5 space-y-2">
-                            <template x-for="(variant, index) in variants" :key="index">
+                        <div x-ref="variantList" class="mt-5 space-y-2">
+                            <template x-for="(variant, index) in variants" :key="variant.id">
                                 <div
-                                    class="group grid gap-3 rounded-2xl bg-zinc-50 p-2.5 transition hover:bg-zinc-100/70 md:grid-cols-[76px_minmax(0,1.2fr)_minmax(0,1fr)_116px_110px_34px] md:items-center"
+                                    data-variant-item
+                                    class="group grid gap-3 rounded-2xl bg-zinc-50 p-2.5 transition hover:bg-zinc-100/70 md:grid-cols-[24px_76px_minmax(0,1.2fr)_minmax(0,1fr)_116px_110px_34px] md:items-center"
                                 >
+                                    <!-- Drag handle -->
+                                    <div class="hidden h-full items-center justify-center md:flex">
+                                        <button
+                                            type="button"
+                                            data-drag-handle
+                                            class="grid cursor-grab grid-cols-2 gap-[2px] rounded-lg p-1.5 text-zinc-300 transition hover:bg-white hover:text-zinc-500 active:cursor-grabbing"
+                                            aria-label="Reorder variant"
+                                        >
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                            <span class="size-[2px] rounded-full bg-current"></span>
+                                        </button>
+                                    </div>
+
                                     <!-- Variant image -->
                                     <label
                                         class="relative flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm"
@@ -1495,6 +1556,42 @@
 
 
 <script>
+    function createSmoothSortable(element, items, options = {}) {
+        return new Sortable(element, {
+            animation: 220,
+            easing: 'cubic-bezier(.2, .8, .2, 1)',
+            draggable: options.draggable || undefined,
+            handle: options.handle || undefined,
+            filter: options.filter || undefined,
+            preventOnFilter: false,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            swapThreshold: 0.62,
+            invertSwap: false,
+            fallbackOnBody: true,
+            delayOnTouchOnly: true,
+            delay: 110,
+            touchStartThreshold: 4,
+            emptyInsertThreshold: 8,
+            onEnd(event) {
+                const oldIndex = event.oldDraggableIndex ?? event.oldIndex;
+                const newIndex = event.newDraggableIndex ?? event.newIndex;
+
+                if (
+                    oldIndex == null ||
+                    newIndex == null ||
+                    oldIndex === newIndex
+                ) {
+                    return;
+                }
+
+                const moved = items.splice(oldIndex, 1)[0];
+                items.splice(newIndex, 0, moved);
+            }
+        });
+    }
+
     lucide.createIcons();
 
     function updatePreview() {
