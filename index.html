@@ -724,6 +724,227 @@
                     </section>
 
 
+                    <!-- Product variants -->
+                    <section
+                        x-data="{
+                            variants: [
+                                {
+                                    name: 'Clay',
+                                    sku: '257505206-CLAY',
+                                    stock: 14,
+                                    price: 189,
+                                    image: 'https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg'
+                                },
+                                {
+                                    name: 'Black',
+                                    sku: '257505206-BLK',
+                                    stock: 12,
+                                    price: 189,
+                                    image: 'https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg'
+                                },
+                                {
+                                    name: 'Forest',
+                                    sku: '257505206-FOR',
+                                    stock: 10,
+                                    price: 189,
+                                    image: 'https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg'
+                                }
+                            ],
+                            uploadVariantImage(event, index) {
+                                const file = event.target.files && event.target.files[0];
+                                if (!file || !file.type.startsWith('image/')) return;
+
+                                const reader = new FileReader();
+                                reader.onload = e => {
+                                    this.variants[index].image = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                                event.target.value = '';
+                            },
+                            addVariant() {
+                                this.variants.push({
+                                    name: 'New variant',
+                                    sku: '257505206-NEW',
+                                    stock: 0,
+                                    price: 189,
+                                    image: ''
+                                });
+
+                                this.$nextTick(() => lucide.createIcons());
+                            },
+                            removeVariant(index) {
+                                this.variants.splice(index, 1);
+                            }
+                        }"
+                        class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6"
+                    >
+
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <div class="flex size-7 items-center justify-center rounded-lg bg-zinc-100">
+                                        <i data-lucide="combine" class="size-3.5"></i>
+                                    </div>
+
+                                    <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
+                                        Product variants
+                                    </h2>
+                                </div>
+
+                                <p class="mt-1.5 pl-9 text-[11px] text-zinc-400">
+                                    Each variant can have its own image, SKU, stock and price.
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                @click="addVariant()"
+                                class="flex h-8 items-center gap-1.5 self-start rounded-lg bg-zinc-100 px-3 text-[10px] font-medium transition hover:bg-zinc-200"
+                            >
+                                <i data-lucide="plus" class="size-3"></i>
+                                Add variant
+                            </button>
+                        </div>
+
+                        <div class="mt-5 space-y-2">
+                            <template x-for="(variant, index) in variants" :key="index">
+                                <div
+                                    class="group grid gap-3 rounded-2xl bg-zinc-50 p-2.5 transition hover:bg-zinc-100/70 md:grid-cols-[76px_minmax(0,1.2fr)_minmax(0,1fr)_90px_100px_34px] md:items-center"
+                                >
+                                    <!-- Variant image -->
+                                    <label
+                                        class="relative flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm"
+                                    >
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="hidden"
+                                            @change="uploadVariantImage($event, index)"
+                                        >
+
+                                        <template x-if="variant.image">
+                                            <img
+                                                :src="variant.image"
+                                                :alt="variant.name"
+                                                class="h-full w-full object-cover"
+                                            >
+                                        </template>
+
+                                        <template x-if="!variant.image">
+                                            <div class="flex h-full w-full flex-col items-center justify-center gap-1 text-zinc-400">
+                                                <i data-lucide="image-plus" class="size-4"></i>
+                                                <span class="text-[8px]">Add photo</span>
+                                            </div>
+                                        </template>
+
+                                        <span
+                                            class="absolute bottom-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-white text-zinc-700 opacity-0 shadow-sm transition group-hover:opacity-100"
+                                        >
+                                            <i data-lucide="camera" class="size-3"></i>
+                                        </span>
+                                    </label>
+
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+                                            Variant
+                                        </label>
+                                        <input
+                                            type="text"
+                                            x-model="variant.name"
+                                            class="h-9 w-full rounded-lg bg-white px-3 text-[11px] font-medium shadow-sm outline-none transition focus:bg-zinc-50"
+                                        >
+                                    </div>
+
+                                    <!-- SKU -->
+                                    <div>
+                                        <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+                                            SKU
+                                        </label>
+                                        <input
+                                            type="text"
+                                            x-model="variant.sku"
+                                            class="h-9 w-full rounded-lg bg-white px-3 font-mono text-[10px] shadow-sm outline-none transition focus:bg-zinc-50"
+                                        >
+                                    </div>
+
+                                    <!-- Stock -->
+                                    <div>
+                                        <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+                                            Stock
+                                        </label>
+                                        <div class="flex h-9 items-center justify-between rounded-lg bg-white px-2 shadow-sm">
+                                            <button
+                                                type="button"
+                                                @click="variant.stock = Math.max(0, Number(variant.stock) - 1)"
+                                                class="flex size-6 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-black"
+                                            >
+                                                <i data-lucide="minus" class="size-3"></i>
+                                            </button>
+
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                x-model.number="variant.stock"
+                                                class="w-9 bg-transparent text-center text-[10px] font-semibold outline-none"
+                                            >
+
+                                            <button
+                                                type="button"
+                                                @click="variant.stock = Number(variant.stock) + 1"
+                                                class="flex size-6 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-black"
+                                            >
+                                                <i data-lucide="plus" class="size-3"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Price -->
+                                    <div>
+                                        <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+                                            Price
+                                        </label>
+                                        <div class="flex h-9 items-center rounded-lg bg-white px-2.5 shadow-sm">
+                                            <span class="mr-1 text-[10px] text-zinc-400">€</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                x-model.number="variant.price"
+                                                class="min-w-0 w-full bg-transparent text-[11px] font-semibold outline-none"
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <!-- Remove -->
+                                    <div class="flex justify-end md:justify-center">
+                                        <button
+                                            type="button"
+                                            @click="removeVariant(index)"
+                                            class="flex size-8 items-center justify-center rounded-full text-zinc-300 transition hover:bg-white hover:text-red-500 hover:shadow-sm"
+                                            aria-label="Remove variant"
+                                        >
+                                            <i data-lucide="trash-2" class="size-3.5"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="mt-3 flex items-center justify-between px-1">
+                            <span
+                                x-text="`${variants.length} ${variants.length === 1 ? 'variant' : 'variants'}`"
+                                class="text-[9px] text-zinc-400"
+                            ></span>
+
+                            <span class="flex items-center gap-1.5 text-[9px] text-zinc-400">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                Changes are local preview only
+                            </span>
+                        </div>
+
+                    </section>
+
+
                     <!-- Pricing -->
                     <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
 
