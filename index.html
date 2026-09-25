@@ -849,9 +849,10 @@
                                         </template>
 
                                         <span
-                                            class="absolute bottom-1.5 right-1.5 flex size-6 items-center justify-center rounded-full bg-white text-zinc-700 opacity-0 shadow-sm transition group-hover:opacity-100"
+                                            class="absolute bottom-1.5 right-1.5 flex size-5 items-center justify-center rounded-full bg-white text-[13px] font-medium leading-none text-zinc-800 shadow-sm transition group-hover:bg-black group-hover:text-white"
+                                            aria-hidden="true"
                                         >
-                                            <i data-lucide="camera" class="size-3"></i>
+                                            +
                                         </span>
                                     </label>
 
@@ -884,13 +885,14 @@
                                         <label class="mb-1 block text-[8px] font-medium uppercase tracking-[0.12em] text-zinc-400">
                                             Stock
                                         </label>
-                                        <div class="flex h-9 items-center justify-between rounded-lg bg-white px-2 shadow-sm">
+                                        <div class="flex h-9 items-center justify-between gap-1 rounded-lg bg-white px-2 shadow-sm">
                                             <button
                                                 type="button"
                                                 @click="variant.stock = Math.max(0, Number(variant.stock) - 1)"
-                                                class="flex size-6 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-black"
+                                                class="flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[14px] font-medium leading-none text-zinc-500 transition hover:bg-black hover:text-white active:scale-95"
+                                                aria-label="Decrease stock"
                                             >
-                                                <i data-lucide="minus" class="size-3"></i>
+                                                −
                                             </button>
 
                                             <input
@@ -903,9 +905,10 @@
                                             <button
                                                 type="button"
                                                 @click="variant.stock = Number(variant.stock) + 1"
-                                                class="flex size-6 items-center justify-center rounded-full text-zinc-400 transition hover:bg-zinc-100 hover:text-black"
+                                                class="flex size-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[14px] font-medium leading-none text-zinc-500 transition hover:bg-black hover:text-white active:scale-95"
+                                                aria-label="Increase stock"
                                             >
-                                                <i data-lucide="plus" class="size-3"></i>
+                                                +
                                             </button>
                                         </div>
                                     </div>
