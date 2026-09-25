@@ -12,6 +12,9 @@
     <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <style type="text/tailwindcss">
         @theme {
             --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
@@ -675,7 +678,10 @@
 
 
                     <!-- Inventory -->
-                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                    <section
+                        x-data="{ stock: 36 }"
+                        class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+                    >
 
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -686,32 +692,45 @@
                                 <span class="text-[11px] font-semibold">Inventory</span>
                             </div>
 
-                            <button class="text-[9px] font-medium text-zinc-400">
+                            <span class="text-[9px] font-medium text-zinc-400">
                                 Manage
-                            </button>
+                            </span>
                         </div>
 
-                        <div class="mt-5 flex items-end justify-between">
-                            <div>
-                                <div class="text-[28px] font-semibold tracking-[-0.05em]">
-                                    36
-                                </div>
+                        <div class="mt-6 flex items-center justify-between rounded-2xl bg-zinc-50 px-3 py-4">
 
-                                <div class="text-[9px] text-zinc-400">
+                            <button
+                                type="button"
+                                @click="stock = Math.max(0, stock - 1)"
+                                class="flex size-10 items-center justify-center rounded-full bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200 transition hover:bg-zinc-100 active:scale-95"
+                                aria-label="Decrease stock"
+                            >
+                                <i data-lucide="minus" class="size-4" stroke-width="1.8"></i>
+                            </button>
+
+                            <div class="min-w-[90px] text-center">
+                                <div
+                                    x-text="stock"
+                                    class="text-[32px] font-semibold leading-none tracking-[-0.05em]"
+                                ></div>
+
+                                <div class="mt-2 text-[9px] text-zinc-400">
                                     units available
                                 </div>
                             </div>
 
-                            <div class="flex h-8 items-end gap-1">
-                                <div class="h-[30%] w-1.5 rounded-full bg-zinc-200"></div>
-                                <div class="h-[55%] w-1.5 rounded-full bg-zinc-200"></div>
-                                <div class="h-[45%] w-1.5 rounded-full bg-zinc-200"></div>
-                                <div class="h-[70%] w-1.5 rounded-full bg-zinc-300"></div>
-                                <div class="h-[90%] w-1.5 rounded-full bg-black"></div>
-                            </div>
+                            <button
+                                type="button"
+                                @click="stock++"
+                                class="flex size-10 items-center justify-center rounded-full bg-black text-white shadow-sm transition hover:bg-zinc-800 active:scale-95"
+                                aria-label="Increase stock"
+                            >
+                                <i data-lucide="plus" class="size-4" stroke-width="1.8"></i>
+                            </button>
+
                         </div>
 
-                        <div class="mt-5 flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5">
+                        <div class="mt-4 flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5">
                             <div>
                                 <div class="text-[9px] text-zinc-400">SKU</div>
                                 <div class="mt-0.5 font-mono text-[10px] font-medium">
