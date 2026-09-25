@@ -228,36 +228,129 @@
                 <div class="space-y-5">
 
                     <!-- Main info -->
-                    <section class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6">
+                    <section
+                        x-data="{
+                            activeLang: 'en',
+                            languageNames: {
+                                en: 'English',
+                                de: 'Deutsch',
+                                fr: 'Français',
+                                es: 'Español'
+                            },
+                            translations: {
+                                en: {
+                                    name: 'STREAM Rolltop Backpack L',
+                                    description: 'Large water-resistant rolltop backpack designed for everyday commuting. 34 L capacity with a padded 16-inch laptop compartment, waterproof zippers, spacious front storage, side slip pockets and adjustable compression straps.'
+                                },
+                                de: {
+                                    name: 'STREAM Rolltop Rucksack L',
+                                    description: 'Großer wasserabweisender Rolltop-Rucksack für Alltag, Arbeit und Pendelwege. 34 Liter Volumen, gepolstertes Fach für Laptops bis 16 Zoll, wasserfeste Reißverschlüsse, geräumiges Frontfach, seitliche Steckfächer und verstellbare Kompressionsriemen.'
+                                },
+                                fr: {
+                                    name: 'Sac à dos rolltop STREAM L',
+                                    description: 'Grand sac à dos rolltop déperlant conçu pour les trajets quotidiens. Capacité de 34 L, compartiment rembourré pour ordinateur jusqu’à 16 pouces, fermetures zippées résistantes à l’eau, grand rangement frontal, poches latérales et sangles de compression réglables.'
+                                },
+                                es: {
+                                    name: 'Mochila rolltop STREAM L',
+                                    description: 'Mochila rolltop grande y resistente al agua, pensada para el día a día y los desplazamientos urbanos. Capacidad de 34 L, compartimento acolchado para portátiles de hasta 16 pulgadas, cremalleras resistentes al agua, amplio bolsillo frontal, bolsillos laterales y correas de compresión ajustables.'
+                                }
+                            },
+                            switchLanguage(lang) {
+                                this.activeLang = lang;
+                                this.$nextTick(() => updatePreview());
+                            }
+                        }"
+                        class="rounded-[22px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.03)] md:p-6"
+                    >
 
-                        <div class="mb-6 flex items-center justify-between">
+                        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h2 class="text-[15px] font-semibold tracking-[-0.02em]">
                                     Product information
                                 </h2>
 
-                                <p class="mt-1 text-[11px] text-zinc-400">
-                                    Basic information visible to customers.
-                                </p>
+                                <div class="mt-1 flex items-center gap-2">
+                                    <p class="text-[11px] text-zinc-400">
+                                        Basic information visible to customers.
+                                    </p>
+
+                                    <span class="hidden h-3 w-px bg-zinc-200 sm:block"></span>
+
+                                    <span class="hidden items-center gap-1.5 text-[10px] font-medium text-zinc-600 sm:flex">
+                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Editing
+                                        <span x-text="languageNames[activeLang]"></span>
+                                    </span>
+                                </div>
                             </div>
 
-                            <div class="flex items-center gap-1 rounded-lg bg-zinc-100 p-1 text-[10px]">
-                                <button class="rounded-md bg-white px-2.5 py-1 font-medium shadow-sm">EN</button>
-                                <button class="px-2.5 py-1 text-zinc-500">DE</button>
-                                <button class="px-2.5 py-1 text-zinc-500">FR</button>
-                                <button class="px-2.5 py-1 text-zinc-500">ES</button>
+                            <div class="flex items-center gap-1 rounded-xl bg-zinc-100 p-1 text-[10px]">
+                                <button
+                                    type="button"
+                                    @click="switchLanguage('en')"
+                                    :class="activeLang === 'en' ? 'bg-black text-white shadow-sm' : 'text-zinc-500 hover:text-black'"
+                                    class="rounded-lg px-3 py-1.5 font-medium transition"
+                                >
+                                    EN
+                                </button>
+
+                                <button
+                                    type="button"
+                                    @click="switchLanguage('de')"
+                                    :class="activeLang === 'de' ? 'bg-black text-white shadow-sm' : 'text-zinc-500 hover:text-black'"
+                                    class="rounded-lg px-3 py-1.5 font-medium transition"
+                                >
+                                    DE
+                                </button>
+
+                                <button
+                                    type="button"
+                                    @click="switchLanguage('fr')"
+                                    :class="activeLang === 'fr' ? 'bg-black text-white shadow-sm' : 'text-zinc-500 hover:text-black'"
+                                    class="rounded-lg px-3 py-1.5 font-medium transition"
+                                >
+                                    FR
+                                </button>
+
+                                <button
+                                    type="button"
+                                    @click="switchLanguage('es')"
+                                    :class="activeLang === 'es' ? 'bg-black text-white shadow-sm' : 'text-zinc-500 hover:text-black'"
+                                    class="rounded-lg px-3 py-1.5 font-medium transition"
+                                >
+                                    ES
+                                </button>
                             </div>
                         </div>
 
+                        <div class="mb-5 flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 sm:hidden">
+                            <div class="flex items-center gap-2">
+                                <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                <span class="text-[10px] font-medium text-zinc-500">Editing language</span>
+                            </div>
+
+                            <span
+                                x-text="languageNames[activeLang]"
+                                class="text-[10px] font-semibold text-zinc-900"
+                            ></span>
+                        </div>
+
                         <div>
-                            <label class="mb-2 block text-[11px] font-medium text-zinc-600">
-                                Product name
-                            </label>
+                            <div class="mb-2 flex items-center justify-between">
+                                <label class="text-[11px] font-medium text-zinc-600">
+                                    Product name
+                                </label>
+
+                                <span
+                                    x-text="activeLang.toUpperCase()"
+                                    class="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[8px] font-semibold text-zinc-500"
+                                ></span>
+                            </div>
 
                             <input
                                 id="productName"
-                                oninput="updatePreview()"
-                                value="STREAM Rolltop Backpack L"
+                                x-model="translations[activeLang].name"
+                                @input="updatePreview()"
                                 class="h-12 w-full rounded-xl bg-zinc-50 px-4 text-[14px] font-medium tracking-[-0.01em] ring-1 ring-zinc-100 transition focus:bg-white focus:ring-zinc-300"
                             >
                         </div>
@@ -268,15 +361,23 @@
                                     Description
                                 </label>
 
-                                <span class="text-[10px] text-zinc-400">
-                                    Product description
-                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        x-text="activeLang.toUpperCase()"
+                                        class="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[8px] font-semibold text-zinc-500"
+                                    ></span>
+
+                                    <span class="text-[10px] text-zinc-400">
+                                        Product description
+                                    </span>
+                                </div>
                             </div>
 
                             <textarea
                                 rows="4"
+                                x-model="translations[activeLang].description"
                                 class="w-full resize-none rounded-xl bg-zinc-50 px-4 py-3 text-[13px] leading-5 ring-1 ring-zinc-100 transition focus:bg-white focus:ring-zinc-300"
-                            >Large water-resistant rolltop backpack designed for everyday commuting. 34 L capacity with a padded 16-inch laptop compartment, waterproof zippers, spacious front storage, side slip pockets and adjustable compression straps.</textarea>
+                            ></textarea>
                         </div>
 
                         <!-- Media -->
