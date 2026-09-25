@@ -1,0 +1,129 @@
+name: Localize mockup images
+
+on:
+  push:
+    paths:
+      - .localize-images-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download images and rewrite HTML
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+
+          root = Path(".")
+          img = root / "img"
+          img.mkdir(exist_ok=True)
+
+          replacements = {
+              "https://randomuser.me/api/portraits/women/44.jpg": "img/avatar-woman-44.jpg",
+              "https://randomuser.me/api/portraits/men/32.jpg": "img/avatar-man-32.jpg",
+              "https://randomuser.me/api/portraits/women/68.jpg": "img/avatar-woman-68.jpg",
+              "https://randomuser.me/api/portraits/men/75.jpg": "img/avatar-man-75.jpg",
+              "https://randomuser.me/api/portraits/women/65.jpg": "img/avatar-woman-65.jpg",
+              "https://randomuser.me/api/portraits/men/41.jpg": "img/avatar-man-41.jpg",
+              "https://randomuser.me/api/portraits/women/50.jpg": "img/avatar-woman-50.jpg",
+              "https://randomuser.me/api/portraits/men/52.jpg": "img/avatar-man-52.jpg",
+
+              "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=160&q=80": "img/unsplash-1521572163474-6864f9cf17ab.jpg",
+              "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=160&q=80": "img/unsplash-1542291026-7eec264c27ff.jpg",
+              "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=120&q=80": "img/unsplash-1542291026-7eec264c27ff.jpg",
+              "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=160&q=80": "img/unsplash-1548036328-c9fa89d128fa.jpg",
+              "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=120&q=80": "img/unsplash-1548036328-c9fa89d128fa.jpg",
+              "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=160&q=80": "img/unsplash-1608231387042-66d1773070a5.jpg",
+              "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=120&q=80": "img/unsplash-1608231387042-66d1773070a5.jpg",
+              "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=160&q=80": "img/unsplash-1553062407-98eeb64c6a62.jpg",
+              "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=160&q=80": "img/unsplash-1598033129183-c4f50c736f10.jpg",
+              "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=160&q=80": "img/unsplash-1588850561407-ed78c282e89b.jpg",
+              "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=160&q=80": "img/unsplash-1602143407151-7111542de6e8.jpg",
+
+              "https://media.crystallize.com/sandqvist/26/8/4/4424c039/257505206-1.jpg": "img/sandqvist-stream-clay-front.jpg",
+              "https://media.crystallize.com/sandqvist/26/8/4/a3374c95/257505206-2.jpg": "img/sandqvist-stream-clay-side.jpg",
+              "https://media.crystallize.com/sandqvist/26/8/4/2bb57ed7/257505206-3.jpg": "img/sandqvist-stream-clay-back.jpg",
+              "https://media.crystallize.com/sandqvist/26/8/4/e206675e/257505206-8.jpg": "img/sandqvist-stream-clay-detail.jpg",
+              "https://media.crystallize.com/sandqvist/25/10/16/139/257505555-1.jpg": "img/sandqvist-stream-navy-front.jpg",
+              "https://media.crystallize.com/sandqvist/25/10/16/130/257505999-1.jpg": "img/sandqvist-stream-black-front.jpg",
+          }
+
+          # One source per destination; prefer the 160px Unsplash URLs where duplicates exist.
+          download_source = {}
+          for source, dest in replacements.items():
+              if dest not in download_source or "w=160" in source:
+                  download_source[dest] = source
+
+          for dest, source in download_source.items():
+              path = root / dest
+              if path.exists() and path.stat().st_size:
+                  continue
+
+              print(f"Downloading {source} -> {dest}")
+              request = Request(
+                  source,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+                  },
+              )
+              with urlopen(request, timeout=45) as response:
+                  data = response.read()
+
+              if not data:
+                  raise RuntimeError(f"Empty image: {source}")
+
+              path.write_bytes(data)
+
+          for html in root.glob("*.html"):
+              text = html.read_text(encoding="utf-8")
+              original = text
+
+              for source, dest in replacements.items():
+                  text = text.replace(source, dest)
+
+              if text != original:
+                  html.write_text(text, encoding="utf-8")
+                  print(f"Updated {html}")
+
+          # Safety checks requested for this prototype.
+          leftovers = []
+          for html in root.glob("*.html"):
+              text = html.read_text(encoding="utf-8")
+              for source in replacements:
+                  if source in text:
+                      leftovers.append((str(html), source))
+              if 'src="/img/' in text or "'/img/" in text or '"/img/' in text:
+                  raise RuntimeError(f"Absolute /img/ path found in {html}")
+
+          if leftovers:
+              raise RuntimeError(f"External image references remain: {leftovers}")
+
+          print(f"Localized {len(download_source)} image files.")
+          PY
+
+      - name: Commit localized assets
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add img *.html
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+
+          git commit -m "Localize mockup images"
+          git push origin HEAD:main
