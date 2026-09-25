@@ -422,6 +422,11 @@
                                 },
                                 matches(label) {
                                     return !this.query || label.toLowerCase().includes(this.query.toLowerCase());
+                                },
+                                selected(label) {
+                                    return $store.product.tags.some(
+                                        item => item.toLowerCase() === label.toLowerCase()
+                                    );
                                 }
                             }"
                         >
@@ -447,11 +452,11 @@
                                 @click.outside="open = false"
                             >
                                 <div
-                                    class="flex min-h-12 flex-wrap items-center gap-1.5 rounded-xl bg-zinc-50 px-2.5 py-2 ring-1 ring-zinc-100 transition focus-within:bg-white focus-within:ring-zinc-300"
+                                    class="flex min-h-12 flex-wrap items-center gap-1.5 rounded-xl bg-zinc-50 p-1 transition focus-within:bg-white"
                                 >
                                     <template x-for="(tag, index) in $store.product.tags" :key="tag">
                                         <span
-                                            class="inline-flex h-7 items-center gap-1.5 rounded-lg bg-white pl-2.5 pr-1.5 text-[10px] font-medium text-zinc-700 shadow-sm ring-1 ring-zinc-200"
+                                            class="inline-flex h-7 items-center gap-1.5 rounded-lg bg-white pl-2.5 pr-1.5 text-[10px] font-medium text-zinc-700 shadow-sm"
                                         >
                                             <span class="size-1.5 rounded-full bg-emerald-500"></span>
 
@@ -500,7 +505,7 @@
                                 <div
                                     x-show="open"
                                     x-transition.origin.top
-                                    class="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-2xl bg-white p-2 shadow-xl ring-1 ring-black/5"
+                                    class="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-2xl bg-white p-2 shadow-xl"
                                 >
                                     <div class="flex items-center justify-between px-2 pb-2 pt-1">
                                         <span class="text-[9px] font-semibold uppercase tracking-[0.12em] text-zinc-400">
@@ -515,7 +520,7 @@
                                     <div class="grid gap-1 sm:grid-cols-2">
                                         <button
                                             type="button"
-                                            x-show="matches('Backpacks')"
+                                            x-show="matches('Backpacks') && !selected('Backpacks')"
                                             @click="addTag('Backpacks')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -530,7 +535,7 @@
 
                                         <button
                                             type="button"
-                                            x-show="matches('Water-resistant')"
+                                            x-show="matches('Water-resistant') && !selected('Water-resistant')"
                                             @click="addTag('Water-resistant')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -545,7 +550,7 @@
 
                                         <button
                                             type="button"
-                                            x-show="matches('Travel')"
+                                            x-show="matches('Travel') && !selected('Travel')"
                                             @click="addTag('Travel')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -560,7 +565,7 @@
 
                                         <button
                                             type="button"
-                                            x-show="matches('Laptop bags')"
+                                            x-show="matches('Laptop bags') && !selected('Laptop bags')"
                                             @click="addTag('Laptop bags')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -575,7 +580,7 @@
 
                                         <button
                                             type="button"
-                                            x-show="matches('Outdoor')"
+                                            x-show="matches('Outdoor') && !selected('Outdoor')"
                                             @click="addTag('Outdoor')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -590,7 +595,7 @@
 
                                         <button
                                             type="button"
-                                            x-show="matches('Everyday')"
+                                            x-show="matches('Everyday') && !selected('Everyday')"
                                             @click="addTag('Everyday')"
                                             class="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition hover:bg-zinc-50"
                                         >
@@ -606,7 +611,7 @@
 
                                     <button
                                         type="button"
-                                        x-show="query.trim() && !popular.some(item => item.toLowerCase() === query.trim().toLowerCase())"
+                                        x-show="query.trim() && !selected(query.trim()) && !popular.some(item => item.toLowerCase() === query.trim().toLowerCase())"
                                         @click="addTag(query)"
                                         class="mt-1 flex w-full items-center gap-2 rounded-xl bg-zinc-50 px-3 py-2.5 text-left transition hover:bg-zinc-100"
                                     >
@@ -1003,7 +1008,7 @@
                 <aside class="space-y-5">
 
                     <!-- Preview -->
-                    <section class="overflow-hidden rounded-[22px] bg-[#171715] text-white shadow-xl shadow-black/5">
+                    <section x-data="{}" class="overflow-hidden rounded-[22px] bg-[#171715] text-white shadow-xl shadow-black/5">
 
                         <div class="flex items-center justify-between px-5 py-4">
                             <div class="flex items-center gap-2">
@@ -1042,11 +1047,11 @@
 
                         <div class="p-5">
 
-                            <div class="mb-3 flex flex-wrap items-center gap-1.5">
+                            <div class="mb-3 flex min-h-5 flex-nowrap items-center gap-1.5 overflow-hidden">
                                 <template x-for="tag in $store.product.tags" :key="tag">
                                     <span
                                         x-text="tag.toUpperCase()"
-                                        class="rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400"
+                                        class="shrink-0 rounded-md bg-zinc-800 px-2 py-1 text-[8px] text-zinc-400"
                                     ></span>
                                 </template>
                             </div>
